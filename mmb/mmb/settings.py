@@ -56,6 +56,7 @@ MMB_APPS = (
     'users',
     'bands',
     'mdata',
+    'muse',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + MMB_APPS

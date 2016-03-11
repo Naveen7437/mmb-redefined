@@ -1,6 +1,6 @@
 from django.db import models
 
-from mmb.bands import Band
+from bands.models import Band
 from mmb.settings import AUTH_USER_MODEL
 from .app_settings import SONG_TAGS
 
