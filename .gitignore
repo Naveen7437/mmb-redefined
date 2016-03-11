@@ -16,8 +16,12 @@ __pycache__
 #App migrations
 mmb/users/migrations/*
 mmb/bands/migrations/*
+mmb/mdata/migrations/*
 
 #Images/audios/videos
 media/songs/*
 media/audio/*
 static/images/profile/*
+
+#db
+mmb/db.sqlite3
