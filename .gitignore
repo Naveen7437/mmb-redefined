@@ -14,7 +14,8 @@ __pycache__
 *.log
 
 #App migrations
-*/migrations/*
+mmb/users/migrations/*
+mmb/bands/migrations/*
 
 #Images/audios/videos
 media/songs/*
