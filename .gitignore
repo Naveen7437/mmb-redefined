@@ -17,6 +17,7 @@ __pycache__
 mmb/users/migrations/*
 mmb/bands/migrations/*
 mmb/mdata/migrations/*
+mmb/muse/migrations/*
 
 #Images/audios/videos
 media/songs/*

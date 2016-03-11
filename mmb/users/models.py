@@ -45,3 +45,13 @@ class Profile(models.Model):
         self.website = kwargs.get('website')
         self.about_me = kwargs.get('about_me')
         self.save()
+
+
+class UserFollower(models.Model):
+    follower = models.ForeignKey(User, related_name='follower')
+    # follower_is_user = models.BooleanField()
+    following = models.ForeignKey(User, related_name='following')
+    # following_is_user = models.BooleanField()
+
+    def __str__(self):
+        return '{} - {}'.format(self.follower.username, self.following.name)

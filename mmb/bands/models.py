@@ -5,7 +5,7 @@ from django.template.defaultfilters import slugify
 
 from mdata.models import Genre, Instrument
 from mmb.settings import AUTH_USER_MODEL
-from .app_settings import CITIES, YEAR_CHOICES, MEMBER_TYPE, SONG_TAGS
+from .app_settings import CITIES, YEAR_CHOICES, MEMBER_TYPE
 
 
 def get_upload_file_name(instance, filename):

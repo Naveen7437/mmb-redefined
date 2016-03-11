@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Band, BandMember, BandVacancy, BandFollowers, BandVacancyApplication
+
+admin.site.register(Band)
+admin.site.register(BandMember)
+admin.site.register(BandFollowers)
+admin.site.register(BandVacancy)
+admin.site.register(BandVacancyApplication)
