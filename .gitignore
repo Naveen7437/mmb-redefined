@@ -1,0 +1,22 @@
+#python compiled files
+*.pyc
+__pycache__
+
+# Pycharm
+.idea
+
+# Vim
+*~
+*.swp
+*.swo
+
+# Logs
+*.log
+
+#App migrations
+*/migrations/*
+
+#Images/audios/videos
+media/songs/*
+media/audio/*
+static/images/profile/*
