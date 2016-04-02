@@ -19,3 +19,11 @@ class InstrumentViewset(viewsets.ModelViewSet):
     """
     serializer_class = InstrumentSerializer
     queryset = Instrument.objects.all()
+
+    # def create(self, *args, **kwargs):
+    #     data = {"instrument": "Piano",
+    #             "instrumentalist":"dsdsd"}
+    #     s = InstrumentSerializer(data=data)
+    #     if s.is_valid():
+    #         s.save()
+    #     return Response(s.data)

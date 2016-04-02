@@ -9,5 +9,6 @@ from mdata.views import GenreViewset, InstrumentViewset
 urlpatterns = [
     url(r'^get/$', GenreViewset.as_view({'get':'list'})),
     url(r'^ins/$', InstrumentViewset.as_view({'get':'list'})),
+    url(r'^create/$', InstrumentViewset.as_view({'post':'create'})),
 ]
 urlpatterns += router.urls

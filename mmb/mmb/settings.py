@@ -42,6 +42,7 @@ DJANGO_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'rest_framework',
+    'rest_framework.authtoken',
 )
 
 THIRD_PARTY_APPS = (
@@ -201,3 +202,12 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': { 'access_type': 'online' }
     }
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+

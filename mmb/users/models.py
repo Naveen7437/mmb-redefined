@@ -4,6 +4,9 @@ from __future__ import unicode_literals, absolute_import
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from rest_framework.authtoken.models import Token
 
 from mdata.models import Genre, Instrument
 from .app_settings import CITIES, PHONE_REG, USER_TYPE
@@ -18,6 +21,12 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'username': self.username})
+
+
+@receiver(post_save, sender=User)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 
 class Profile(models.Model):
