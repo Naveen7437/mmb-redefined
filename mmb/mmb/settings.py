@@ -51,6 +51,7 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
+    'djcelery',
 )
 
 MMB_APPS = (
@@ -141,15 +142,15 @@ USE_TZ = True
 # STATIC FILE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = str(BASE_DIR('staticfiles'))
+# STATIC_ROOT = str(BASE_DIR('staticfiles'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = (
-    str(BASE_DIR.path('static')),
-)
+# STATICFILES_DIRS = (
+#     str(BASE_DIR.path('static')),
+# )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
@@ -160,7 +161,7 @@ STATICFILES_FINDERS = (
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-MEDIA_ROOT = str(BASE_DIR('media'))
+# MEDIA_ROOT = str(BASE_DIR('media'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'
@@ -211,3 +212,13 @@ REST_FRAMEWORK = {
     )
 }
 
+# BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+# CELERY_ENABLE_UTC = True
+CELERY_TIMEZONE = "Asia/Kolkata"
+# CELERYD_PREFETCH_MULTIPLIER = 1
+CELERY_DEFAULT_QUEUE = 'mmb'
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
