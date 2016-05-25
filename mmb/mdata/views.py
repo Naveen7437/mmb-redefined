@@ -1,14 +1,19 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
-
+from rest_framework.authentication import SessionAuthentication,\
+                        BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from mdata.models import Genre, Instrument
 from mdata.serializers import GenreSerializer, InstrumentSerializer
+
 
 
 class GenreViewset(viewsets.ModelViewSet):
     """
 
     """
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = GenreSerializer
     queryset = Genre.objects.all()
 
@@ -17,6 +22,8 @@ class InstrumentViewset(viewsets.ModelViewSet):
     """
 
     """
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = InstrumentSerializer
     queryset = Instrument.objects.all()
 

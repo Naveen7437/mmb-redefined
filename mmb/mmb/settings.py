@@ -209,7 +209,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    )
+        'rest_framework.permissions.IsAuthenticated'
+    ),
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+
 }
 
 # BROKER_URL = 'amqp://guest:guest@localhost:5672//'
