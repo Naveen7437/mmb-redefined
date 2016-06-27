@@ -1,6 +1,6 @@
 from django.db import models
-from urllib.request import urlretrieve
-import audioread
+#from urllib.request import urlretrieve
+#import audioread
 
 from bands.models import Band
 from mmb.settings import AUTH_USER_MODEL
