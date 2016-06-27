@@ -14,7 +14,7 @@ class UserProfileViewset(viewsets.ModelViewSet):
 
     """
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+#    permission_classes = (IsAuthenticated,)
     serializer_class = UserProfileSerializer
     queryset = Profile.objects.all()
 
@@ -24,7 +24,7 @@ class UserViewset(viewsets.ModelViewSet):
 
     """
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+ #   permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
     queryset = User.objects.all()
 

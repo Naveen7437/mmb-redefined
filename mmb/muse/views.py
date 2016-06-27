@@ -15,7 +15,7 @@ class SongViewset(viewsets.ModelViewSet):
 
     """
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+   # permission_classes = (IsAuthenticated,)
     serializer_class = SongSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('name', 'user')
@@ -47,6 +47,6 @@ class SongLikeViewset(viewsets.ModelViewSet):
 
     """
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    #permission_classes = (IsAuthenticated,)
     serializer_class = SongLikeSerializer
     queryset = SongLike.objects.all()

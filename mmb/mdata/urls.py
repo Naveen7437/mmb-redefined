@@ -4,11 +4,11 @@ router = routers.SimpleRouter()
 
 from mdata.views import GenreViewset, InstrumentViewset
 
-# router = DefaultRouter()
-# router.register(r'users', UserProfile)
+
+router = routers.DefaultRouter()
+router.register(r'genre', GenreViewset)
+router.register(r'instrument', InstrumentViewset)
+
 urlpatterns = [
-    url(r'^get/$', GenreViewset.as_view({'get':'list'})),
-    url(r'^ins/$', InstrumentViewset.as_view({'get':'list'})),
-    url(r'^create/$', InstrumentViewset.as_view({'post':'create'})),
+    url(r'^', include(router.urls)),
 ]
-urlpatterns += router.urls
