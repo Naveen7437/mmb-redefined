@@ -41,16 +41,16 @@ DJANGO_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
 )
 
 THIRD_PARTY_APPS = (
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
+    # OAuth
+    'oauth2_provider',
+    'social.apps.django_app.default',
+    'rest_framework_social_oauth2',
     'djcelery',
 )
 
@@ -75,10 +75,8 @@ MIDDLEWARE_CLASSES = (
 )
 
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGE_SIZE': 10
-}
+# REST_FRAMEWORK = {
+# }
 
 ROOT_URLCONF = 'mmb.urls'
 
@@ -97,6 +95,9 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                # OAuth
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
@@ -167,53 +168,47 @@ STATICFILES_FINDERS = (
 MEDIA_URL = '/media/'
 
 AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
+    #django
     'django.contrib.auth.backends.ModelBackend',
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
+    # Facebook OAuth2
+    'social.backends.facebook.FacebookAppOAuth2',
+    'social.backends.facebook.FacebookOAuth2'
+    # django-rest-framework-social-oauth2
+    'rest_framework_social_oauth2.backends.DjangoOAuth2',
+    # Google OAuth2
+    'social.backends.google.GoogleOAuth2',
+    
 )
 
-
-SOCIALACCOUNT_QUERY_EMAIL = True
-
-SOCIALACCOUNT_PROVIDERS = {
-    'facebook': {
-        'METHOD': 'oauth2',
-        'SCOPE': ['email', 'public_profile', 'user_friends'],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-        'FIELDS': [
-            'id',
-            'email',
-            'name',
-            'first_name',
-            'last_name',
-            'verified',
-            'locale',
-            'timezone',
-            'link',
-            'gender',
-            'updated_time'],
-        'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': 'path.to.callable',
-        'VERIFIED_EMAIL': True,
-        'VERSION': 'v2.4'
-    },
-    'google': {
-        'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': { 'access_type': 'online' }
-    }
+# Facebook configuration
+SOCIAL_AUTH_FACEBOOK_KEY = '1477614369199719'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'b0640dd8b30ed4e39a795fac20a18263'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email',]
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+  'locale': 'ru_RU',
+  'fields': 'id, name, email, age_range'
 }
+
+# Google Configuration
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email',]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.permissions.IsAuthenticated'
+        'rest_framework.permissions.IsAuthenticated',
+        # OAuth
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
     ),
-    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
-
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGE_SIZE': 10
 }
+
 
 # BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 # CELERY_ENABLE_UTC = True
