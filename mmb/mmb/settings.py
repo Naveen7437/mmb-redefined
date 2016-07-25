@@ -172,7 +172,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     # Facebook OAuth2
     'social.backends.facebook.FacebookAppOAuth2',
-    'social.backends.facebook.FacebookOAuth2'
+    'social.backends.facebook.FacebookOAuth2',
     # django-rest-framework-social-oauth2
     'rest_framework_social_oauth2.backends.DjangoOAuth2',
     # Google OAuth2
@@ -186,7 +186,7 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'b0640dd8b30ed4e39a795fac20a18263'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email',]
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   'locale': 'ru_RU',
-  'fields': 'id, name, email, age_range'
+  'fields': 'id, name, email, age_range, picture, user_birthday, user_location'
 }
 
 # Google Configuration
