@@ -17,3 +17,8 @@ USER_TYPE = [
     ('Listener', 'Listener'),
     ('Musician', 'Musician')
 ]
+
+REFRESH_TIME_IN_MINUTES = 30
+
+# TODO: should be moved to settings file
+ACCESS_FROM_REFRESH_URL = 'http://localhost:8000/auth/token'

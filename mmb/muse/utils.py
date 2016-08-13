@@ -14,3 +14,4 @@ def check_for_session(request):
             pass
 
     return is_band, band_id
+
