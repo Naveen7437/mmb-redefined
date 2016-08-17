@@ -12,7 +12,7 @@ class GenreViewset(viewsets.ModelViewSet):
     """
 
     """
-    authentication_classes = (TokenAuthentication,)
+    # authentication_classes = (TokenAuthentication,)
 #    permission_classes = (IsAuthenticated,)
     serializer_class = GenreSerializer
     queryset = Genre.objects.all()
@@ -22,7 +22,7 @@ class InstrumentViewset(viewsets.ModelViewSet):
     """
 
     """
-    authentication_classes = (TokenAuthentication,)
+    # authentication_classes = (TokenAuthentication,)
  #   permission_classes = (IsAuthenticated,)
     serializer_class = InstrumentSerializer
     queryset = Instrument.objects.all()

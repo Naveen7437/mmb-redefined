@@ -45,9 +45,9 @@ class RefreshOauthAuthentication(OAuth2Authentication):
 class UserProfileViewset(viewsets.ModelViewSet):
     """
 
-    """
-    authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    permission_classes = (IsAuthenticated,)
+    # """
+    # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
+    # permission_classes = (IsAuthenticated,)
     serializer_class = UserProfileSerializer
     queryset = Profile.objects.all()
 
@@ -55,9 +55,9 @@ class UserProfileViewset(viewsets.ModelViewSet):
 class UserViewset(viewsets.ModelViewSet):
     """
 
-    """
-    authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    permission_classes = (IsAuthenticated,)
+    # """
+    # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
+    # permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
