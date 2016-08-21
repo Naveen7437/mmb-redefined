@@ -20,3 +20,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
+
+
+class UserDetailSerializer(serializers.ModelSerializer):
+    """
+    serializes the thumbnail details of a user
+    """
+    user_name = serializers.CharField(source='username', required=False, read_only=True)
+    first_name = serializers.CharField(source='firstname', required=False, read_only=True)
+    last_name = serializers.CharField(source='lastname', required=False, read_only=True)
+
+    class Meta:
+        model = Profile
