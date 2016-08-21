@@ -56,20 +56,18 @@ class UserProfileViewset(viewsets.ModelViewSet):
     response = {
     }
 
-    # def get_serializer_context(self):
-    #     return {'request': self.request}
-
     def user_thumbnail_details(self, request):
         """
 
         :param request:
         :return:
         """
-        response = copy.deepcopy(self.response)
-        ids = request.get('ids', None)
-        count = request.get('count', None)
 
-        if not ids or count:
+        response = copy.deepcopy(self.response)
+        ids = request.query_params.get('ids', None)
+        count = request.query_params.get('count', None)
+
+        if not ids and not count:
             response['detail'] = "Invalid Query parameters"
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
@@ -85,10 +83,11 @@ class UserProfileViewset(viewsets.ModelViewSet):
 
             user_profile_queryset = Profile.objects.filter(user__id__in=user_ids)
 
-            serializer = UserDetailSerializer(user_profile_queryset)
+            serializer = UserDetailSerializer(user_profile_queryset,
+                                              context={'request': request}, many=True)
 
-            if serializer.is_valid():
-                return Response(serializer.data)
+            # if serializer.is_valid():
+            return Response(serializer.data)
 
         try:
             count = int(count)
@@ -97,7 +96,9 @@ class UserProfileViewset(viewsets.ModelViewSet):
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
         queryset = self.queryset.order_by('-id')[:count]
-        serializer = UserDetailSerializer(queryset)
+
+        serializer = UserDetailSerializer(queryset, many=True,
+                                          context={'request': request})
         return Response(serializer.data)
 
 

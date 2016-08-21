@@ -84,8 +84,13 @@ class Profile(models.Model):
 
 
 class UserFollower(models.Model):
+    """
+
+    """
+    # one who follows
     follower = models.ForeignKey(User, related_name='follower')
-    # follower_is_user = models.BooleanField()
+
+    # one who is being followed
     following = models.ForeignKey(User, related_name='following')
     # following_is_user = models.BooleanField()
 
