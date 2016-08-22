@@ -41,6 +41,8 @@ class Profile(models.Model):
     following_count = models.IntegerField(default=0)
     followed_by_count = models.IntegerField(default=0)
     band_follow_count = models.IntegerField(default=0)
+    join_band = models.BooleanField(default=False)
+    create_band = models.BooleanField(default=False)
     about_me = models.CharField(max_length=255, blank=True, null=True)
     # other_link = models.CharField(max_length=255, blank=True, null=True)    #This is the link which user updates
 
@@ -82,8 +84,13 @@ class Profile(models.Model):
 
 
 class UserFollower(models.Model):
+    """
+
+    """
+    # one who follows
     follower = models.ForeignKey(User, related_name='follower')
-    # follower_is_user = models.BooleanField()
+
+    # one who is being followed
     following = models.ForeignKey(User, related_name='following')
     # following_is_user = models.BooleanField()
 
