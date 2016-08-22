@@ -139,6 +139,23 @@ class UserViewset(viewsets.ModelViewSet):
 
         return Response(response, status=status.HTTP_200_OK)
 
+    def user_details(self, request):
+        """
+        return basic user details
+        :param request:
+        :return:
+        """
+        response = copy.deepcopy(self.response)
+        user = request.user
+        if user.is_anonymous():
+            response['error'] = "Invalid/Anonymous user"
+            return Response(response)
+
+        serializer = UserSerializer(user)
+        response['data'] = serializer.data
+        response['success'] = True
+        return Response(response, status=status.HTTP_200_OK)
+
 
 
 

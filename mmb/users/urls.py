@@ -12,5 +12,6 @@ router.register(r'user', UserViewset)
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^details/$', UserProfileViewset.as_view({"get": "user_thumbnail_details"})),
-    url(r'^validate/username/$', UserViewset.as_view({"get": "validate_username"}))
+    url(r'^validate/username/$', UserViewset.as_view({"get": "validate_username"})),
+    url(r'^basic/details/$', UserViewset.as_view({"get": "user_details"}))
 ]
