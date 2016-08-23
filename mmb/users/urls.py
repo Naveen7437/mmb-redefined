@@ -13,5 +13,5 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^thumbnail-details/$', UserProfileViewset.as_view({"get": "user_thumbnail_details"})),
     url(r'^validate/username/$', UserViewset.as_view({"get": "validate_username"})),
-    url(r'^basic-details/$', UserViewset.as_view({"get": "user_basic_details"}))
+    url(r'^auth-details/$', UserViewset.as_view({"get": "auth_details"}))
 ]

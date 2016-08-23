@@ -139,7 +139,7 @@ class UserViewset(viewsets.ModelViewSet):
 
         return Response(response, status=status.HTTP_200_OK)
 
-    def user_basic_details(self, request):
+    def auth_details(self, request):
         """
         return basic user details
         :param request:
