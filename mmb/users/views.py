@@ -14,7 +14,7 @@ from users.app_settings import REFRESH_TIME_IN_MINUTES
 from users.utils import create_new_access_token
 from users.models import Profile, User
 from users.serializers import UserProfileSerializer, UserSerializer,\
-    UserDetailSerializer
+    UserDetailSerializer, UserProfileCreateSerializer
 
 
 class RefreshOauthAuthentication(OAuth2Authentication):
@@ -47,14 +47,25 @@ class RefreshOauthAuthentication(OAuth2Authentication):
 
 class UserProfileViewset(viewsets.ModelViewSet):
     """
-
-    # """
+    user profile viewset
+    """
     # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
     # permission_classes = (IsAuthenticated,)
-    serializer_class = UserProfileSerializer
+    serializer_class = UserProfileCreateSerializer
     queryset = Profile.objects.all()
-    response = {
-    }
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        get user profile from user id
+        """
+        try:
+            pk = kwargs.get('pk')
+            profile = Profile.objects.get(user__id=int(pk))
+        except:
+            raise Http404
+
+        s = UserProfileSerializer(profile)
+        return Response(s.data)
 
     def user_thumbnail_details(self, request):
         """
@@ -151,7 +162,7 @@ class UserViewset(viewsets.ModelViewSet):
             response['error'] = "Invalid/Anonymous user"
             return Response(response)
 
-        serializer = UserSerializer(user)
+        serializer = UserSerializer(user, context={'request': request})
         response['data'] = serializer.data
         response['success'] = True
         return Response(response, status=status.HTTP_200_OK)

@@ -15,3 +15,4 @@ urlpatterns = [
     url(r'^validate/username/$', UserViewset.as_view({"get": "validate_username"})),
     url(r'^auth-details/$', UserViewset.as_view({"get": "auth_details"}))
 ]
+

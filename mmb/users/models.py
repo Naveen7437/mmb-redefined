@@ -30,7 +30,7 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, unique=True)
     genre = models.ManyToManyField(Genre, blank=True, null=True)
     instrument = models.ManyToManyField(Instrument, blank=True, null=True)
     # todo - need list of all colleges if possible
@@ -43,6 +43,7 @@ class Profile(models.Model):
     band_follow_count = models.IntegerField(default=0)
     join_band = models.BooleanField(default=False)
     create_band = models.BooleanField(default=False)
+
     about_me = models.CharField(max_length=255, blank=True, null=True)
     # other_link = models.CharField(max_length=255, blank=True, null=True)    #This is the link which user updates
 
