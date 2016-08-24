@@ -128,7 +128,7 @@ class UserViewset(viewsets.ModelViewSet):
         "success": False
     }
 
-    def validate_username(self, request):
+    def validate_username(self, request, *args, **kwargs):
         """
         check if the username still exists or not
         :param request: username
@@ -136,7 +136,7 @@ class UserViewset(viewsets.ModelViewSet):
         doesn't exist in system
         """
         response = copy.deepcopy(self.response)
-        username = request.query_params.get('username', None)
+        username = kwargs.get('username')
 
         if not username:
             response['error'] = "Invalid Query parametrs"
