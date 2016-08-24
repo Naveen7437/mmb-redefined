@@ -32,6 +32,18 @@ class UserSerializer(serializers.ModelSerializer):
     """
     returns basic user details
     """
+
+    class Meta:
+        model = User
+
+        fields = ('id', 'username', 'first_name', 'last_name', 'email')
+
+
+# Todo: temporary solution, to be removed
+class UserAuthDetailsSerializer(serializers.ModelSerializer):
+    """
+
+    """
     is_new = serializers.SerializerMethodField('check_new_user')
 
     def check_new_user(self, obj):
@@ -43,7 +55,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         try:
             Profile.objects.get(user=user)
-        except Profile.DoesNotExist:
+        except (Profile.DoesNotExist, TypeError):
             return True
         return False
 

@@ -42,6 +42,7 @@ class Profile(models.Model):
     followed_by_count = models.IntegerField(default=0)
     band_follow_count = models.IntegerField(default=0)
     join_band = models.BooleanField(default=False)
+    with_band = models.BooleanField(default=False)
     create_band = models.BooleanField(default=False)
 
     about_me = models.CharField(max_length=255, blank=True, null=True)

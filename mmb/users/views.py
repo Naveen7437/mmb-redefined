@@ -14,7 +14,7 @@ from users.app_settings import REFRESH_TIME_IN_MINUTES
 from users.utils import create_new_access_token
 from users.models import Profile, User
 from users.serializers import UserProfileSerializer, UserSerializer,\
-    UserDetailSerializer, UserProfileCreateSerializer
+    UserDetailSerializer, UserProfileCreateSerializer, UserAuthDetailsSerializer
 
 
 class RefreshOauthAuthentication(OAuth2Authentication):
@@ -150,7 +150,7 @@ class UserViewset(viewsets.ModelViewSet):
 
         return Response(response, status=status.HTTP_200_OK)
 
-    def auth_details(self, request):
+    def auth_details(self, request, *args, **kwargs):
         """
         return basic user details
         :param request:
@@ -158,11 +158,12 @@ class UserViewset(viewsets.ModelViewSet):
         """
         response = copy.deepcopy(self.response)
         user = request.user
+
         if user.is_anonymous():
             response['error'] = "Invalid/Anonymous user"
             return Response(response)
 
-        serializer = UserSerializer(user, context={'request': request})
+        serializer = UserAuthDetailsSerializer(user, context={'request': request})
         response['data'] = serializer.data
         response['success'] = True
         return Response(response, status=status.HTTP_200_OK)
