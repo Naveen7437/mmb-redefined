@@ -1,7 +1,7 @@
 import copy
 from django.http import Http404
 from django.contrib.auth import get_user_model
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, filters
 from rest_framework.response import Response
 # from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -52,20 +52,22 @@ class UserProfileViewset(viewsets.ModelViewSet):
     # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
     # permission_classes = (IsAuthenticated,)
     serializer_class = UserProfileCreateSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('user',)
     queryset = Profile.objects.all()
 
-    def retrieve(self, request, *args, **kwargs):
-        """
-        get user profile from user id
-        """
-        try:
-            pk = kwargs.get('pk')
-            profile = Profile.objects.get(user__id=int(pk))
-        except:
-            raise Http404
-
-        s = UserProfileSerializer(profile)
-        return Response(s.data)
+    # def retrieve(self, request, *args, **kwargs):
+    #     """
+    #     get user profile from user id
+    #     """
+    #     try:
+    #         pk = kwargs.get('pk')
+    #         profile = Profile.objects.get(user__id=int(pk))
+    #     except:
+    #         raise Http404
+    #
+    #     s = UserProfileSerializer(profile)
+    #     return Response(s.data)
 
     def user_thumbnail_details(self, request):
         """

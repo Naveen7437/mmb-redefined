@@ -60,31 +60,6 @@ class Profile(models.Model):
         self.save()
 
 
-    @property
-    def username(self):
-        """
-        returns username of the user
-        :return:
-        """
-        return self.user.username
-
-    @property
-    def firstname(self):
-        """
-        returns first name of user
-        :return:
-        """
-        return self.user.first_name
-
-    @property
-    def lastname(self):
-        """
-        returns last name of user
-        :return:
-        """
-        return self.user.last_name
-
-
 class UserFollower(models.Model):
     """
 
