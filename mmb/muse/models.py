@@ -1,5 +1,4 @@
 from unidecode import unidecode
-from mutagen.mp3 import MP3
 
 from django.db import models
 from django.dispatch import receiver
@@ -14,7 +13,7 @@ from muse.utils import get_song_duration
 
 def get_upload_file_name(instance, filename):
     """
-    uploading file
+    uploading songs
     """
     if not isinstance(filename, str):
         map(filename, str)
@@ -22,12 +21,9 @@ def get_upload_file_name(instance, filename):
     filename = unidecode(smart_text(filename))
 
     if instance.band:
-
         id = instance.band.id
         name = instance.band.name
-
     else:
-
         id = instance.user.id
         name = instance.user.username
 
@@ -54,6 +50,7 @@ class Song(models.Model):
 
 @receiver(post_save, sender=Song)
 def set_song_duration(sender, instance=None, created=False, **kwargs):
+    if created:
         instance.duration = get_song_duration(instance.upload.path)
         instance.save()
 
