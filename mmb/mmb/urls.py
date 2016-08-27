@@ -28,5 +28,5 @@ urlpatterns = [
     url(r'^users/', include('users.urls')),
     url(r'^bands/', include('bands.urls')),
     url(r'^muse/', include('muse.urls')),
-    url(r'^auth/', include('rest_framework_social_oauth2.urls')),
+    url(r'^auth/', include('rest_framework_social_oauth2.urls'))
 ]
