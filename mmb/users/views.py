@@ -146,7 +146,10 @@ class UserViewset(viewsets.ModelViewSet):
 
         try:
             get_user_model().objects.get(username=username)
-            response['error'] = "Username already exists"
+            if request.user.username == username:
+                response['success'] = True
+            else:
+                response['error'] = "Username already exists"
         except User.DoesNotExist:
             response['success'] = True
 
