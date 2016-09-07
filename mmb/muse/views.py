@@ -58,9 +58,9 @@ class SongViewset(viewsets.ModelViewSet):
                 song.save()
                 response = SongSerializer(song, context={'request': request}).data
             except:
-                response['error'] = "TODO: fuck error"
+                response['error'] = "TODO: fuck error(valid)"
         else:
-            response['error'] = "TODO: fuck error"
+            response['error'] = "TODO: fuck error(invalid)"
         return Response(response)
 
     def get_queryset(self):
@@ -77,10 +77,6 @@ class SongViewset(viewsets.ModelViewSet):
             except:
                 pass
         return queryset
-
-
-
-
 
 
 class SongLikeViewset(viewsets.ModelViewSet):

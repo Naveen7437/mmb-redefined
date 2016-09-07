@@ -13,10 +13,15 @@ class SongSerializer(serializers.ModelSerializer):
 
     """
     liked = serializers.SerializerMethodField('song_liked_by_user')
+    full_name = serializers.CharField(source='user.get_full_name',
+                                      required=False, read_only=True)
 
-    # function to return whether song liked
-    # by logged in user or not
     def song_liked_by_user(self, obj):
+        """
+        function to return whether song liked
+        by logged in user or not
+        """
+
         request = self.context.get('request')
         user = request.user
 
@@ -41,7 +46,7 @@ class SongSerializer(serializers.ModelSerializer):
     class Meta:
         model = Song
         # fields = ('id', 'user', 'band', 'name', 'likes',
-        #           'upload', 'duration', 'liked', 'tags', 'rating')
+        #           'upload', 'duration', 'liked', 'tags', 'rating', 'full_name')
 
 
 class SongLikeSerializer(serializers.ModelSerializer):
