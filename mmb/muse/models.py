@@ -22,12 +22,12 @@ def get_upload_file_name(instance, filename):
 
     if instance.band:
         id = instance.band.id
-        name = instance.band.name
+        name = 'band'
     else:
         id = instance.user.id
-        name = instance.user.username
+        name = 'user'
 
-    return 'audio/{0}_{1}/{2}'.format(id, name, filename)
+    return 'audio/{0}_{1}/{2}'.format(name, id, filename)
 
 
 class Song(models.Model):

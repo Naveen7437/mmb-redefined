@@ -143,7 +143,7 @@ USE_TZ = True
 # STATIC FILE CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-# STATIC_ROOT = str(BASE_DIR('staticfiles'))
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
@@ -162,7 +162,7 @@ STATICFILES_FINDERS = (
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
-# MEDIA_ROOT = str(BASE_DIR('media'))
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'
