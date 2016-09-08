@@ -15,6 +15,7 @@ class SongSerializer(serializers.ModelSerializer):
     liked = serializers.SerializerMethodField('song_liked_by_user')
     full_name = serializers.CharField(source='user.get_full_name',
                                       required=False, read_only=True)
+    username = serializers.CharField(source='user.username', required=False)
 
     def song_liked_by_user(self, obj):
         """
@@ -61,7 +62,6 @@ class UploadSongForm(forms.Form):
     """
     form to validate the upload file
     """
-
     upload = forms.FileField()
 
     def clean_upload(self):
