@@ -15,7 +15,8 @@ class SongSerializer(serializers.ModelSerializer):
     liked = serializers.SerializerMethodField('song_liked_by_user')
     full_name = serializers.CharField(source='user.get_full_name',
                                       required=False, read_only=True)
-    username = serializers.CharField(source='user.username', required=False)
+    username = serializers.CharField(source='user.username', required=False,
+                                     read_only=True)
 
     def song_liked_by_user(self, obj):
         """
@@ -82,5 +83,3 @@ class UploadSongForm(forms.Form):
             return file
         else:
             raise ValidationError("Couldn't read uploaded file")
-
-

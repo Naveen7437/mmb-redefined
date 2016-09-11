@@ -1,4 +1,7 @@
 import requests
+from django.core.files.base import ContentFile
+from requests import request, ConnectionError
+
 
 from users.app_settings import ACCESS_FROM_REFRESH_URL
 
@@ -32,3 +35,53 @@ def create_new_access_token(oauth_obj):
         print (result.content)
 
     return
+
+
+def save_user_picture(backend, user, response, is_new,  *args, **kwargs):
+    """
+    Get the user avatar (and any other details you're interested in)
+    and save them
+    """
+
+    if backend.name == 'google-plus':
+        if response.get('image') and response['image'].get('url'):
+            url = response['image'].get('url')
+            if user.avatar:
+                # if existing avatar stick with it rather than google syncing
+                pass
+            else:
+                try:
+                    response = request('GET', url)
+                    response.raise_for_status()
+                except ConnectionError:
+                    pass
+                else:
+                    # No avatar so sync it with the google one.
+                    # Passing '' for name will invoke my upload_to function
+                    # saving by username (you prob want to change this!)
+                    user.avatar.save(u'',
+                                    ContentFile(response.content),
+                                    save=False
+                                    )
+                    user.save()
+
+    elif backend.name == 'facebook' and is_new:
+        # TODO: saving only if does not exist
+        # if user.avatar:
+        #     pass
+        # else:
+        url = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
+
+        try:
+            response = request('GET', url, params={'type': 'large'})
+            response.raise_for_status()
+        except ConnectionError:
+            pass
+        else:
+            user.avatar.save(u'',
+                             ContentFile(response.content),
+                             save=False
+                             )
+            user.save()
+
+

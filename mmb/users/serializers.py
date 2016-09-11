@@ -21,6 +21,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', required=False, read_only=True)
     first_name = serializers.CharField(source='user.first_name', required=False, read_only=True)
     last_name = serializers.CharField(source='user.last_name', required=False, read_only=True)
+    avatar = serializers.CharField(source='user.avatar', required=False, read_only=True)
     genre = GenreSerializer(many=True, read_only=True)
     instrument = InstrumentSerializer(many=True, read_only=True)
 
@@ -36,7 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
 
-        fields = ('id', 'username', 'first_name', 'last_name', 'email')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'avatar')
 
 
 # Todo: temporary solution, to be removed

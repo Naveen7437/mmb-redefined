@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
 
+from unidecode import unidecode
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.dispatch import receiver
+from django.utils.encoding import smart_text
 from django.db.models.signals import post_save
 from rest_framework.authtoken.models import Token
 
@@ -12,9 +14,32 @@ from mdata.models import Genre, Instrument
 from .app_settings import CITIES, PHONE_REG, USER_TYPE
 
 
+def get_upload_file_name(instance, filename):
+    """
+    function to set path for uploading images
+    """
+    if not isinstance(filename, str):
+        map(filename, str)
+
+    filename = unidecode(smart_text(filename))
+
+    # if instance.band:
+    #     id = instance.band.id
+    #     name = 'band'
+    # else:
+    id = instance.id
+    name = 'user'
+
+    return 'images/{0}/{1}'.format(name, id)
+
+
 class User(AbstractUser):
+    """
+    User class: adding fields to the user table
+    """
     name = models.CharField(blank=True, max_length=255)
     type = models.CharField(max_length=10, choices=USER_TYPE, default='Listener')
+    avatar = models.ImageField(upload_to=get_upload_file_name, blank=True, null=True)
 
     def __str__(self):
         return self.username
@@ -22,11 +47,11 @@ class User(AbstractUser):
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'username': self.username})
 
-
-@receiver(post_save, sender=User)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
+#
+# @receiver(post_save, sender=User)
+# def create_auth_token(sender, instance=None, created=False, **kwargs):
+#     if created:
+#         Token.objects.create(user=instance)
 
 
 class Profile(models.Model):
