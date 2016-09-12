@@ -56,24 +56,20 @@ class UserProfileViewset(viewsets.ModelViewSet):
     filter_fields = ('user',)
     queryset = Profile.objects.all()
 
-    def retrieve(self, request, *args, **kwargs):
-        """
-        get user profile from user id
-        """
-        try:
-            pk = kwargs.get('pk')
-            profile = Profile.objects.get(user__id=int(pk))
-        except:
-            raise Http404
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
 
-        s = UserProfileSerializer(profile)
-        return Response(s.data)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = UserProfileSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = UserProfileSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def user_thumbnail_details(self, request):
         """
-
-        :param request:
-        :return:
+        api to return details of user thumbnail
         """
 
         response = copy.deepcopy(self.response)
