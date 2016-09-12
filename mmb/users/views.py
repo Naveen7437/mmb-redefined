@@ -56,18 +56,18 @@ class UserProfileViewset(viewsets.ModelViewSet):
     filter_fields = ('user',)
     queryset = Profile.objects.all()
 
-    # def retrieve(self, request, *args, **kwargs):
-    #     """
-    #     get user profile from user id
-    #     """
-    #     try:
-    #         pk = kwargs.get('pk')
-    #         profile = Profile.objects.get(user__id=int(pk))
-    #     except:
-    #         raise Http404
-    #
-    #     s = UserProfileSerializer(profile)
-    #     return Response(s.data)
+    def retrieve(self, request, *args, **kwargs):
+        """
+        get user profile from user id
+        """
+        try:
+            pk = kwargs.get('pk')
+            profile = Profile.objects.get(user__id=int(pk))
+        except:
+            raise Http404
+
+        s = UserProfileSerializer(profile)
+        return Response(s.data)
 
     def user_thumbnail_details(self, request):
         """

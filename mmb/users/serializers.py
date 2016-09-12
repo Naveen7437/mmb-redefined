@@ -10,6 +10,7 @@ class UserProfileCreateSerializer(serializers.ModelSerializer):
     """
     serializer to create and update user profile
     """
+
     class Meta:
         model = Profile
 
@@ -19,8 +20,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     serializes the user profile data
     """
     username = serializers.CharField(source='user.username', required=False, read_only=True)
-    first_name = serializers.CharField(source='user.first_name', required=False, read_only=True)
-    last_name = serializers.CharField(source='user.last_name', required=False, read_only=True)
+    full_name = serializers.CharField(source='user.get_full_name', required=False, read_only=True)
     avatar = serializers.CharField(source='user.avatar', required=False, read_only=True)
     genre = GenreSerializer(many=True, read_only=True)
     instrument = InstrumentSerializer(many=True, read_only=True)
