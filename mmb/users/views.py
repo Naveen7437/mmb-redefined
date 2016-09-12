@@ -58,13 +58,14 @@ class UserProfileViewset(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
+        profile_obj = queryset[0]
 
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = UserProfileSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+        # page = self.paginate_queryset(queryset)
+        # if page is not None:
+        #     serializer = UserProfileSerializer(page, many=True)
+        #     return self.get_paginated_response(serializer.data)
 
-        serializer = UserProfileSerializer(queryset, many=True)
+        serializer = UserProfileSerializer(profile_obj)
         return Response(serializer.data)
 
     def user_thumbnail_details(self, request):
