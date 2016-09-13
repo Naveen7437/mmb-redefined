@@ -58,8 +58,13 @@ class UserProfileViewset(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
+
+        if not queryset:
+            raise Http404
+
         profile_obj = queryset[0]
 
+        # TODO: change to many=True
         # page = self.paginate_queryset(queryset)
         # if page is not None:
         #     serializer = UserProfileSerializer(page, many=True)
@@ -168,6 +173,27 @@ class UserViewset(viewsets.ModelViewSet):
         serializer = UserAuthDetailsSerializer(user, context={'request': request})
         response['data'] = serializer.data
         response['success'] = True
+        return Response(response, status=status.HTTP_200_OK)
+
+    def update_profile_pic(self, request, *args, **kwargs):
+        """
+        api to update the avatar of user
+        """
+        response = copy.deepcopy(self.response)
+        user = request.user
+
+        # TODO: raise error if user is anonymous
+        if user.is_anonymous():
+            # response['error'] = "Invalid/Anonymous user"
+            # return Response(response)
+            user = get_user_model().objects.get(username="admin")
+
+        photo = request.FILES.get('photo')
+        if photo:
+            user.avatar = photo
+            user.save()
+            response["success"] = True
+
         return Response(response, status=status.HTTP_200_OK)
 
 

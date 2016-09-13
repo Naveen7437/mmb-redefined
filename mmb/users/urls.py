@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^thumbnail-details/$', UserProfileViewset.as_view({"get": "user_thumbnail_details"})),
     url(r'^validate/username/(?P<username>.*)\/$', UserViewset.as_view({"get": "validate_username"})),
-    url(r'^auth-details/$', UserViewset.as_view({"get": "auth_details"}))
+    url(r'^auth-details/$', UserViewset.as_view({"get": "auth_details"})),
+    url(r'^update-pic/$', UserViewset.as_view({"put": "update_profile_pic"})),
 ]
 

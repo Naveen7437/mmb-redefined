@@ -15,7 +15,7 @@ from django.contrib.auth import get_user_model
 class SongViewset(viewsets.ModelViewSet):
     """
 
-    #  """
+    """
     #  authentication_classes = (TokenAuthentication,)
     # permission_classes = (IsAuthenticated,)
     serializer_class = SongSerializer
