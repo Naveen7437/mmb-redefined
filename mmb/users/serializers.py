@@ -21,9 +21,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
     """
     username = serializers.CharField(source='user.username', required=False, read_only=True)
     full_name = serializers.CharField(source='user.get_full_name', required=False, read_only=True)
-    avatar = serializers.CharField(source='user.avatar', required=False, read_only=True)
+    avatar = serializers.SerializerMethodField("get_avatar_url")
     genre = GenreSerializer(many=True, read_only=True)
     instrument = InstrumentSerializer(many=True, read_only=True)
+
+    def get_avatar_url(self, obj):
+        """
+        return absolute url of avatar
+        """
+        return self.context.get('request').build_absolute_uri(obj.user.avatar.url)
 
     class Meta:
         model = Profile

@@ -70,7 +70,7 @@ class UserProfileViewset(viewsets.ModelViewSet):
         #     serializer = UserProfileSerializer(page, many=True)
         #     return self.get_paginated_response(serializer.data)
 
-        serializer = UserProfileSerializer(profile_obj)
+        serializer = UserProfileSerializer(profile_obj, context={'request': request})
         return Response(serializer.data)
 
     def user_thumbnail_details(self, request):
@@ -175,26 +175,26 @@ class UserViewset(viewsets.ModelViewSet):
         response['success'] = True
         return Response(response, status=status.HTTP_200_OK)
 
-    def update_profile_pic(self, request, *args, **kwargs):
-        """
-        api to update the avatar of user
-        """
-        response = copy.deepcopy(self.response)
-        user = request.user
-
-        # TODO: raise error if user is anonymous
-        if user.is_anonymous():
-            # response['error'] = "Invalid/Anonymous user"
-            # return Response(response)
-            user = get_user_model().objects.get(username="admin")
-
-        photo = request.FILES.get('photo')
-        if photo:
-            user.avatar = photo
-            user.save()
-            response["success"] = True
-
-        return Response(response, status=status.HTTP_200_OK)
+    # def update_profile_pic(self, request, *args, **kwargs):
+    #     """
+    #     api to update the avatar of user
+    #     """
+    #     response = copy.deepcopy(self.response)
+    #     user = request.user
+    #
+    #     # TODO: raise error if user is anonymous
+    #     if user.is_anonymous():
+    #         # response['error'] = "Invalid/Anonymous user"
+    #         # return Response(response)
+    #         user = get_user_model().objects.get(username="admin")
+    #
+    #     photo = request.FILES.get('photo')
+    #     if photo:
+    #         user.avatar = photo
+    #         user.save()
+    #         response["success"] = True
+    #
+    #     return Response(response, status=status.HTTP_200_OK)
 
 
 
