@@ -29,7 +29,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
         """
         return absolute url of avatar
         """
-        return self.context.get('request').build_absolute_uri(obj.user.avatar.url)
+        url = ''
+        if obj.user.avatar:
+            url = self.context.get('request').build_absolute_uri(obj.user.avatar.url)
+        return url
 
     class Meta:
         model = Profile

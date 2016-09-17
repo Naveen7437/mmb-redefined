@@ -39,8 +39,8 @@ class User(AbstractUser):
     """
     name = models.CharField(blank=True, max_length=255)
     type = models.CharField(max_length=10, choices=USER_TYPE, default='Listener')
-    avatar = models.ImageField(upload_to=get_upload_file_name, blank=True, null=True)
-
+    avatar = models.ImageField(upload_to=get_upload_file_name, default="images/user/default.jpg")
+    
     def __str__(self):
         return self.username
 
