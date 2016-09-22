@@ -78,7 +78,7 @@ class UserProfileViewset(viewsets.ModelViewSet):
         api to return details of user thumbnail
         """
 
-        response = copy.deepcopy(self.response)
+        response = {}
         ids = request.query_params.get('ids', None)
         count = request.query_params.get('count', None)
 

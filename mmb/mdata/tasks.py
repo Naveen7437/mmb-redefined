@@ -8,10 +8,10 @@ def send_multiple_mails(sub, msg, fro, to_list):
     connection.open()
     for to in to_list:
         try:
-            print 'sending mail to - ', to
+            # print 'sending mail to - ', to
             email = mail.EmailMessage(sub, msg, 'noreply@makemyband.in', [to], connection=connection)
             email.send()
         except Exception as e:
-            print str(e)
+           pass
 
     connection.close()

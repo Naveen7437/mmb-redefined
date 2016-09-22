@@ -1,13 +1,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
+import os
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import BytesIO, StringIO
+
+from PIL import Image
+from resizeimage import resizeimage
 
 from unidecode import unidecode
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse
+from django.core.files.base import ContentFile
 from django.db import models
 from django.dispatch import receiver
 from django.utils.encoding import smart_text
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save
 from rest_framework.authtoken.models import Token
 
 from mdata.models import Genre, Instrument
@@ -39,20 +49,67 @@ class User(AbstractUser):
     """
     name = models.CharField(blank=True, max_length=255)
     type = models.CharField(max_length=10, choices=USER_TYPE, default='Listener')
-    avatar = models.ImageField(upload_to=get_upload_file_name, default="images/user/default.jpg")
-    
+    avatar = models.ImageField(upload_to=get_upload_file_name,
+                                default="images/user/default.jpeg", blank=True)
+
     def __str__(self):
         return self.username
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'username': self.username})
 
-#
-# @receiver(post_save, sender=User)
-# def create_auth_token(sender, instance=None, created=False, **kwargs):
-#     if created:
-#         Token.objects.create(user=instance)
+    def save(self, *args, **kwargs):
 
+        image_name = os.path.split(self.avatar.name)[-1]
+
+        # TODO: change this ***** and move to task
+        if image_name != "default.jpeg":
+            pil_image_obj = Image.open(self.avatar)
+            new_image = resizeimage.resize_thumbnail(pil_image_obj, (300, 450))
+
+            new_image_io = BytesIO()
+            new_image.save(new_image_io, format='JPEG')
+
+            temp_name = self.avatar.name
+            self.avatar.delete(save=False)
+
+            self.avatar.save(
+                temp_name,
+                content=ContentFile(new_image_io.getvalue()),
+                save=False
+            )
+
+        super(User, self).save(*args, **kwargs)
+
+# @receiver(pre_save, sender=User)
+# def set_image_size(sender, instance=None, created=False, **kwargs):
+#     """
+#     set size before uploading image
+#     """
+#     if instance:
+#         im = get_thumbnail(instance.avatar, '300x450', crop='center', quality=99)
+        #
+        #
+        # image_name = os.path.split(instance.avatar.name)[-1]
+        #
+        # # don't need to save default image everytime so checking
+        # # if image is default type then bypassing this method
+        #
+        # if image_name == "default.png":
+        #
+        #     # open image using PIL
+        #     img = Image.open(instance.avatar.path)
+        #     img.resize((300, 450), PIL.Image.ANTIALIAS)
+        #
+        #     temp_handle = BytesIO()
+        #     img.save(temp_handle, 'png')
+        #     temp_handle.seek(0)
+        #
+        #     img_file = SimpleUploadedFile(image_name, temp_handle.read(),
+        #                                   content_type='image/png')
+        #
+        #     instance.avatar.save('{0}.png'.format(os.path.splitext(img_file.name)[0]), img_file, save=False)
+#
 
 class Profile(models.Model):
     user = models.ForeignKey(User, unique=True)
@@ -98,3 +155,4 @@ class UserFollower(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.follower.username, self.following.name)
+
