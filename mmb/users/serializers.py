@@ -55,6 +55,16 @@ class UserAuthDetailsSerializer(serializers.ModelSerializer):
 
     """
     is_new = serializers.SerializerMethodField('check_new_user')
+    avatar = serializers.SerializerMethodField("get_avatar_url")
+
+    def get_avatar_url(self, obj):
+        """
+        return absolute url of avatar
+        """
+        url = ''
+        if obj.user.avatar:
+            url = self.context.get('request').build_absolute_uri(obj.user.avatar.url)
+        return url
 
     def check_new_user(self, obj):
         """
@@ -72,7 +82,7 @@ class UserAuthDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
 
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'is_new')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'is_new', 'avatar')
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
