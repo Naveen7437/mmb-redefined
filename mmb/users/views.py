@@ -50,8 +50,8 @@ class UserProfileViewset(viewsets.ModelViewSet):
     """
     user profile viewset
     """
-    # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    # permission_classes = (IsAuthenticated,)
+    authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserProfileCreateSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('user',)
@@ -122,8 +122,8 @@ class UserViewset(viewsets.ModelViewSet):
     """
 
     # """
-    # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    # permission_classes = (IsAuthenticated,)
+    authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
@@ -202,8 +202,8 @@ class UserFollowerViewset(viewsets.ModelViewSet):
     """
 
     """
-    # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    # permission_classes = (IsAuthenticated,)
+    authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserFollowerSerializer
     queryset = UserFollower.objects.all()
 
