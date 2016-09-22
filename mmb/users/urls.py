@@ -2,12 +2,13 @@ from django.conf.urls import patterns, url, include
 from rest_framework import routers
 router = routers.SimpleRouter()
 
-from users.views import UserProfileViewset, UserViewset
+from users.views import UserProfileViewset, UserViewset, UserFollowerViewset
 
 
 router = routers.DefaultRouter()
 router.register(r'profile', UserProfileViewset)
 router.register(r'user', UserViewset)
+router.register(r'follow', UserFollowerViewset)
 
 urlpatterns = [
     url(r'^', include(router.urls)),

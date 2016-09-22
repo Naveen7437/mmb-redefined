@@ -12,9 +12,10 @@ from rest_framework_social_oauth2.authentication import SocialAuthentication
 from mdata.utils import get_time_diff
 from users.app_settings import REFRESH_TIME_IN_MINUTES
 from users.utils import create_new_access_token
-from users.models import Profile, User
+from users.models import Profile, User, UserFollower
 from users.serializers import UserProfileSerializer, UserSerializer,\
-    UserDetailSerializer, UserProfileCreateSerializer, UserAuthDetailsSerializer
+    UserDetailSerializer, UserProfileCreateSerializer, UserAuthDetailsSerializer,\
+    UserFollowerSerializer
 
 
 class RefreshOauthAuthentication(OAuth2Authentication):
@@ -195,6 +196,17 @@ class UserViewset(viewsets.ModelViewSet):
     #         response["success"] = True
     #
     #     return Response(response, status=status.HTTP_200_OK)
+
+
+class UserFollowerViewset(viewsets.ModelViewSet):
+    """
+
+    """
+    # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
+    # permission_classes = (IsAuthenticated,)
+    serializer_class = UserFollowerSerializer
+    queryset = UserFollower.objects.all()
+
 
 
 

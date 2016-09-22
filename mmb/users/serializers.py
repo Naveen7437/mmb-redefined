@@ -120,3 +120,11 @@ class UserDetailSerializer(serializers.ModelSerializer):
                   'followed_by_count', 'is_follower')
 
 
+class UserFollowerSerializer(serializers.ModelSerializer):
+    """
+
+    """
+    class Meta:
+        model = UserFollower
+
+
