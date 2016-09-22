@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework import routers
+from . import settings
+from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 #router.register(r'users', views.UserViewSet)
@@ -26,6 +28,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^data/', include('mdata.urls')),
     url(r'^users/', include('users.urls')),
+    url(r'^bands/', include('bands.urls')),
     url(r'^muse/', include('muse.urls')),
     url(r'^auth/', include('rest_framework_social_oauth2.urls'))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

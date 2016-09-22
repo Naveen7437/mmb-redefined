@@ -1,20 +1,33 @@
+from unidecode import unidecode
+
 from django.db import models
-#from urllib.request import urlretrieve
-#import audioread
+from django.dispatch import receiver
+from django.utils.encoding import smart_text
+from django.db.models.signals import post_save
 
 from bands.models import Band
 from mmb.settings import AUTH_USER_MODEL
-from .app_settings import SONG_TAGS
+from muse.app_settings import SONG_TAGS
+from muse.utils import get_song_duration
 
 
 def get_upload_file_name(instance, filename):
+    """
+    uploading songs
+    """
+    if not isinstance(filename, str):
+        map(filename, str)
+
+    filename = unidecode(smart_text(filename))
+
     if instance.band:
         id = instance.band.id
-        name = instance.band.name
+        name = 'band'
     else:
         id = instance.user.id
-        name = instance.user.username
-    return 'audio/{0}_{1}/{2}'.format(id, name, filename)
+        name = 'user'
+
+    return 'audio/{0}_{1}/{2}'.format(name, id, filename)
 
 
 class Song(models.Model):
@@ -27,20 +40,19 @@ class Song(models.Model):
     rating = models.IntegerField(default=3)
     upload = models.FileField(upload_to=get_upload_file_name)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-    duration = models.FloatField(default=0.0)
+    duration = models.CharField(max_length=15, blank=True, null=True)
     # singer = models.CharField(blank=True, max_length=255)
     # label = models.CharField(blank=True, max_length=255)
-
 
     def __str__(self):
         return '{}'.format(self.name)
 
-    # def save(self, *args, **kwargs):
-    #     audio = audioread.audio_open(self.upload.url)
-    #     self.duration = audio.duration
-    #     super(Song, self).save(*args, **kwargs)
 
-
+@receiver(post_save, sender=Song)
+def set_song_duration(sender, instance=None, created=False, **kwargs):
+    if created:
+        instance.duration = get_song_duration(instance.upload.path)
+        instance.save()
 
 
 

@@ -1,20 +1,56 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
+import os
 
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import BytesIO, StringIO
+
+from PIL import Image
+from resizeimage import resizeimage
+
+from unidecode import unidecode
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse
+from django.core.files.base import ContentFile
 from django.db import models
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.utils.encoding import smart_text
+from django.db.models.signals import pre_save
 from rest_framework.authtoken.models import Token
 
 from mdata.models import Genre, Instrument
 from .app_settings import CITIES, PHONE_REG, USER_TYPE
 
 
+def get_upload_file_name(instance, filename):
+    """
+    function to set path for uploading images
+    """
+    if not isinstance(filename, str):
+        map(filename, str)
+
+    filename = unidecode(smart_text(filename))
+
+    # if instance.band:
+    #     id = instance.band.id
+    #     name = 'band'
+    # else:
+    id = instance.id
+    name = 'user'
+
+    return 'images/{0}/{1}'.format(name, id)
+
+
 class User(AbstractUser):
+    """
+    User class: adding fields to the user table
+    """
     name = models.CharField(blank=True, max_length=255)
     type = models.CharField(max_length=10, choices=USER_TYPE, default='Listener')
+    avatar = models.ImageField(upload_to=get_upload_file_name,
+                                default="images/user/default.jpeg", blank=True)
 
     def __str__(self):
         return self.username
@@ -22,15 +58,61 @@ class User(AbstractUser):
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'username': self.username})
 
+    def save(self, *args, **kwargs):
 
-@receiver(post_save, sender=User)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
+        image_name = os.path.split(self.avatar.name)[-1]
 
+        # TODO: change this ***** and move to task
+        if image_name != "default.jpeg":
+            pil_image_obj = Image.open(self.avatar)
+            new_image = resizeimage.resize_thumbnail(pil_image_obj, (300, 450))
+
+            new_image_io = BytesIO()
+            new_image.save(new_image_io, format='JPEG')
+
+            temp_name = self.avatar.name
+            self.avatar.delete(save=False)
+
+            self.avatar.save(
+                temp_name,
+                content=ContentFile(new_image_io.getvalue()),
+                save=False
+            )
+
+        super(User, self).save(*args, **kwargs)
+
+# @receiver(pre_save, sender=User)
+# def set_image_size(sender, instance=None, created=False, **kwargs):
+#     """
+#     set size before uploading image
+#     """
+#     if instance:
+#         im = get_thumbnail(instance.avatar, '300x450', crop='center', quality=99)
+        #
+        #
+        # image_name = os.path.split(instance.avatar.name)[-1]
+        #
+        # # don't need to save default image everytime so checking
+        # # if image is default type then bypassing this method
+        #
+        # if image_name == "default.png":
+        #
+        #     # open image using PIL
+        #     img = Image.open(instance.avatar.path)
+        #     img.resize((300, 450), PIL.Image.ANTIALIAS)
+        #
+        #     temp_handle = BytesIO()
+        #     img.save(temp_handle, 'png')
+        #     temp_handle.seek(0)
+        #
+        #     img_file = SimpleUploadedFile(image_name, temp_handle.read(),
+        #                                   content_type='image/png')
+        #
+        #     instance.avatar.save('{0}.png'.format(os.path.splitext(img_file.name)[0]), img_file, save=False)
+#
 
 class Profile(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, unique=True)
     genre = models.ManyToManyField(Genre, blank=True, null=True)
     instrument = models.ManyToManyField(Instrument, blank=True, null=True)
     # todo - need list of all colleges if possible
@@ -41,6 +123,10 @@ class Profile(models.Model):
     following_count = models.IntegerField(default=0)
     followed_by_count = models.IntegerField(default=0)
     band_follow_count = models.IntegerField(default=0)
+    join_band = models.BooleanField(default=False)
+    with_band = models.BooleanField(default=False)
+    create_band = models.BooleanField(default=False)
+
     about_me = models.CharField(max_length=255, blank=True, null=True)
     # other_link = models.CharField(max_length=255, blank=True, null=True)    #This is the link which user updates
 
@@ -56,36 +142,17 @@ class Profile(models.Model):
         self.save()
 
 
-    @property
-    def username(self):
-        """
-        returns username of the user
-        :return:
-        """
-        return self.user.username
-
-    @property
-    def firstname(self):
-        """
-        returns first name of user
-        :return:
-        """
-        return self.user.first_name
-
-    @property
-    def lastname(self):
-        """
-        returns last name of user
-        :return:
-        """
-        return self.user.last_name
-
-
 class UserFollower(models.Model):
+    """
+
+    """
+    # one who follows
     follower = models.ForeignKey(User, related_name='follower')
-    # follower_is_user = models.BooleanField()
+
+    # one who is being followed
     following = models.ForeignKey(User, related_name='following')
     # following_is_user = models.BooleanField()
 
     def __str__(self):
         return '{} - {}'.format(self.follower.username, self.following.name)
+
