@@ -62,8 +62,8 @@ class UserAuthDetailsSerializer(serializers.ModelSerializer):
         return absolute url of avatar
         """
         url = ''
-        if obj.user.avatar:
-            url = self.context.get('request').build_absolute_uri(obj.user.avatar.url)
+        if obj.avatar:
+            url = self.context.get('request').build_absolute_uri(obj.avatar.url)
         return url
 
     def check_new_user(self, obj):
