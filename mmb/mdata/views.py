@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication,\
                         BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework_social_oauth2.authentication import SocialAuthentication
 from mdata.models import Genre, Instrument
 from mdata.serializers import GenreSerializer, InstrumentSerializer
@@ -15,7 +15,7 @@ class GenreViewset(viewsets.ModelViewSet):
 
     """
     authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = GenreSerializer
     queryset = Genre.objects.all()
 
@@ -25,7 +25,7 @@ class InstrumentViewset(viewsets.ModelViewSet):
 
     """
     authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = InstrumentSerializer
     queryset = Instrument.objects.all()
 

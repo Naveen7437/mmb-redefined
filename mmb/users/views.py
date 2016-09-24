@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets, status, filters
 from rest_framework.response import Response
 # from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from oauth2_provider.ext.rest_framework import OAuth2Authentication
 from oauth2_provider.oauth2_backends import get_oauthlib_core
 from rest_framework_social_oauth2.authentication import SocialAuthentication
@@ -51,7 +51,7 @@ class UserProfileViewset(viewsets.ModelViewSet):
     user profile viewset
     """
     authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = UserProfileCreateSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('user',)
@@ -123,7 +123,7 @@ class UserViewset(viewsets.ModelViewSet):
 
     # """
     authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
@@ -203,7 +203,7 @@ class UserFollowerViewset(viewsets.ModelViewSet):
 
     """
     authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = UserFollowerSerializer
     queryset = UserFollower.objects.all()
 

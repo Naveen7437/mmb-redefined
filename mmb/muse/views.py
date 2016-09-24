@@ -4,7 +4,7 @@ from rest_framework import filters
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework_social_oauth2.authentication import SocialAuthentication
 
 from bands.models import Band
@@ -19,7 +19,7 @@ class SongViewset(viewsets.ModelViewSet):
 
     """
     authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = SongSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('name', 'user')
@@ -86,6 +86,6 @@ class SongLikeViewset(viewsets.ModelViewSet):
 
     """
     authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = SongLikeSerializer
     queryset = SongLike.objects.all()
