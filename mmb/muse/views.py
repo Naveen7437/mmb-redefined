@@ -18,8 +18,8 @@ class SongViewset(viewsets.ModelViewSet):
     """
 
     """
-    authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
+    # permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = SongSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('name', 'user')
@@ -89,3 +89,28 @@ class SongLikeViewset(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = SongLikeSerializer
     queryset = SongLike.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        """
+
+        """
+        response = {}
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user_id = serializer.data.get('user')
+        song_id = serializer.data.get('song')
+
+        if not (user_id and song_id):
+            return Response({'error': 'Invalid request'})
+
+        try:
+            SongLike.objects.get(user__id=user_id, song__id=song_id)
+            response['error'] = "object already exists"
+        except SongLike.DoesNotExist:
+            SongLike.objects.create(user_id=user_id, song_id=song_id)
+            response = serializer.data
+
+        return Response(response)
+
