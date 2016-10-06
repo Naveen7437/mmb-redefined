@@ -1,12 +1,17 @@
 import copy
+from datetime import datetime, timedelta
 from django.http import Http404
 from django.contrib.auth import get_user_model
+from django.conf import settings
 from rest_framework import viewsets, status, filters
 from rest_framework.response import Response
 # from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 from oauth2_provider.ext.rest_framework import OAuth2Authentication
 from oauth2_provider.oauth2_backends import get_oauthlib_core
+from oauth2_provider.models import Application
+from oauth2_provider.models import RefreshToken, AccessToken
+from oauthlib.common import generate_token
 from rest_framework_social_oauth2.authentication import SocialAuthentication
 
 from mdata.utils import get_time_diff
@@ -15,7 +20,9 @@ from users.utils import create_new_access_token
 from users.models import Profile, User, UserFollower
 from users.serializers import UserProfileSerializer, UserSerializer,\
     UserDetailSerializer, UserProfileCreateSerializer, UserAuthDetailsSerializer,\
-    UserFollowerSerializer
+    UserFollowerSerializer, UserCreateSerializer
+
+expires = datetime.now() + timedelta(seconds=settings.OAUTH2_PROVIDER['ACCESS_TOKEN_EXPIRE_SECONDS'])
 
 
 class RefreshOauthAuthentication(OAuth2Authentication):
@@ -176,6 +183,9 @@ class UserViewset(viewsets.ModelViewSet):
         response['success'] = True
         return Response(response, status=status.HTTP_200_OK)
 
+
+
+
     # def update_profile_pic(self, request, *args, **kwargs):
     #     """
     #     api to update the avatar of user
@@ -206,6 +216,56 @@ class UserFollowerViewset(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = UserFollowerSerializer
     queryset = UserFollower.objects.all()
+
+
+class UserCreateViewset(viewsets.ModelViewSet):
+    """
+
+    """
+    permission_classes = (AllowAny, )
+    serializer_class = UserCreateSerializer
+
+    def create(self, request, *args, **kwargs):
+        """
+
+        """
+        data = request.data
+        data = dict(data.items())
+        serializer = UserCreateSerializer(data=data)
+
+        if serializer.is_valid():
+            user = get_user_model().objects.create_user(**serializer.data)
+
+
+            # getting application
+            application = Application.objects.get(name="mmb")
+
+            # creating access token
+            access_token = AccessToken(
+                user=user,
+                expires=expires,
+                token=generate_token(),
+                application=application)
+
+            access_token.save()
+
+            refresh_token = RefreshToken.objects.create(
+                user=user,
+                token=generate_token(),
+                access_token=access_token,
+                application=application)
+
+            response = {
+                'access_token': access_token.token,
+                'token_type': 'Bearer',
+                'expires_in': settings.OAUTH2_PROVIDER['ACCESS_TOKEN_EXPIRE_SECONDS'],
+                'refresh_token': refresh_token.token
+            }
+
+            return Response(response, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 

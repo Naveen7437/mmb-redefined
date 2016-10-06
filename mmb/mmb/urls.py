@@ -30,5 +30,6 @@ urlpatterns = [
     url(r'^users/', include('users.urls')),
     url(r'^bands/', include('bands.urls')),
     url(r'^muse/', include('muse.urls')),
-    url(r'^auth/', include('rest_framework_social_oauth2.urls'))
+    url(r'^auth/', include('rest_framework_social_oauth2.urls')),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,3 @@
-import validators
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
@@ -128,3 +127,48 @@ class UserFollowerSerializer(serializers.ModelSerializer):
         model = UserFollower
 
 
+class UserCreateSerializer(serializers.ModelSerializer):
+    """
+
+    """
+    class Meta:
+        model = get_user_model()
+        fields = (
+            'id',
+            'username',
+            'password',
+            'email'
+        )
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
+    #
+    # def create(self, validated_data):
+    #     user = get_user_model().objects.create_user(**validated_data)
+    #
+    #     application = Application.objects.get(name="mmb")
+    #     access_token =access_token = AccessToken(
+    #         user=user,
+    #         expires=expires,
+    #         token=generate_token(),
+    #         application=application)
+    #     access_token.save()
+    #
+    #     refresh_token = RefreshToken.objects.create(
+    #         user=user,
+    #         access_token=access_token,
+    #         application=application)
+    #
+    #     token = {
+    #         'access_token': access_token.token,
+    #         'token_type': 'Bearer',
+    #         'expires_in': 36000,
+    #         'refresh_token': refresh_token.token
+    #     }
+    #     return user
+    #
+    # def update(self, instance, validated_data):
+    #     if 'password' in validated_data:
+    #         password = validated_data.pop('password')
+    #         instance.set_password(password)
+    #     return super(UserCreateSerializer, self).update(instance, validated_data)
