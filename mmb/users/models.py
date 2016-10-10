@@ -109,7 +109,7 @@ class User(AbstractUser):
         #                                   content_type='image/png')
         #
         #     instance.avatar.save('{0}.png'.format(os.path.splitext(img_file.name)[0]), img_file, save=False)
-#
+
 
 class Profile(models.Model):
     user = models.ForeignKey(User, unique=True)
@@ -199,19 +199,5 @@ class UserFollower(models.Model):
 #         return Response({"success": _("Password has been reset with the new password.")})
 #
 #
-# class PasswordChangeView(GenericAPIView):
-#     """
-#     Calls Django Auth SetPasswordForm save method.
-#     Accepts the following POST parameters: new_password1, new_password2
-#     Returns the success/fail message.
-#     """
-#
-#     serializer_class = PasswordChangeSerializer
-#     permission_classes = (IsAuthenticated,)
-#
-#     def post(self, request):
-#         serializer = self.get_serializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-# return Response({"success": _("New password has been saved.")})
+
 #

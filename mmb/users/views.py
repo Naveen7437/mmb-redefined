@@ -5,8 +5,9 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 from rest_framework import viewsets, status, filters
 from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView
 # from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
 from oauth2_provider.ext.rest_framework import OAuth2Authentication
 from oauth2_provider.oauth2_backends import get_oauthlib_core
 from oauth2_provider.models import Application
@@ -20,7 +21,7 @@ from users.utils import create_new_access_token
 from users.models import Profile, User, UserFollower
 from users.serializers import UserProfileSerializer, UserSerializer,\
     UserDetailSerializer, UserProfileCreateSerializer, UserAuthDetailsSerializer,\
-    UserFollowerSerializer, UserCreateSerializer
+    UserFollowerSerializer, UserCreateSerializer, PasswordChangeSerializer
 
 expires = datetime.now() + timedelta(seconds=settings.OAUTH2_PROVIDER['ACCESS_TOKEN_EXPIRE_SECONDS'])
 
@@ -128,7 +129,7 @@ class UserProfileViewset(viewsets.ModelViewSet):
 class UserViewset(viewsets.ModelViewSet):
     """
 
-    # """
+    """
     authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = UserSerializer
@@ -208,6 +209,7 @@ class UserViewset(viewsets.ModelViewSet):
     #     return Response(response, status=status.HTTP_200_OK)
 
 
+
 class UserFollowerViewset(viewsets.ModelViewSet):
     """
 
@@ -266,6 +268,24 @@ class UserCreateViewset(viewsets.ModelViewSet):
             return Response(response, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordChangeView(GenericAPIView):
+    """
+    Calls Django Auth SetPasswordForm save method.
+    Accepts the following POST parameters: new_password
+    """
+
+    authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PasswordChangeSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"msg": "New password has been updated successfully",
+                         "success": True})
 
 
 
