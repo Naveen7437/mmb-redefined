@@ -235,7 +235,8 @@ class UserCreateViewset(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             user = get_user_model().objects.create_user(**serializer.data)
-
+            user.set_password(data.get('password'))
+            user.save()
 
             # getting application
             application = Application.objects.get(name="mmb")
