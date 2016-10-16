@@ -5,6 +5,9 @@ from datetime import datetime, timedelta
 from django.http import Http404
 from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+
 from rest_framework import viewsets, status, filters
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
@@ -295,3 +298,19 @@ class PasswordChangeView(GenericAPIView):
         serializer.save()
         return Response({"msg": "New password has been updated successfully",
                          "success": True})
+
+
+
+def activate_user(request, unique_id):
+    """
+    activate user and redirect to login page
+    """
+    # TODO: check expiration of the verification link
+    user = get_object_or_404(get_user_model(), activation_key=unique_id)
+
+    if user.is_active == False:
+        user.is_active = True
+
+    # TODO: adding redirect url here to login view
+    return HttpResponseRedirect("htps://google.com")
+

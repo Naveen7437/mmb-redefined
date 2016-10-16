@@ -241,3 +241,12 @@ OAUTH2_PROVIDER = {
     'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'},
     'ACCESS_TOKEN_EXPIRE_SECONDS': 36000
 }
+
+# EMAIL_HOST = 'localhost'
+# EMAIL_PORT = 1025
+
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
+SENDGRID_USER = "Naveen7437"
+SENDGRID_PASSWORD = "delhivery@123"
+
+APP_URL = "http://52.40.82.234"

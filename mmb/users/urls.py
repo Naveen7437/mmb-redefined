@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url, include
 from rest_framework import routers
 
 from users.views import UserProfileViewset, UserViewset, UserFollowerViewset,\
-    UserCreateViewset, PasswordChangeView
+    UserCreateViewset, PasswordChangeView, activate_user
 
 
 router = routers.DefaultRouter()
@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^auth-details/$', UserViewset.as_view({"get": "auth_details"})),
     url(r'^update-pic/$', UserViewset.as_view({"put": "update_profile_pic"})),
     url(r'^create/$', UserCreateViewset.as_view({"post": "create"})),
-    url(r'^password/change/$', PasswordChangeView.as_view(), name='password_change')
+    url(r'^password/change/$', PasswordChangeView.as_view(), name='password_change'),
+    url(r'^activate/(?P<key>.+)$', activate_user),
 ]
 
