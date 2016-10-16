@@ -1,4 +1,6 @@
 import copy
+import uuid
+
 from datetime import datetime, timedelta
 from django.http import Http404
 from django.contrib.auth import get_user_model
@@ -17,7 +19,7 @@ from rest_framework_social_oauth2.authentication import SocialAuthentication
 
 from mdata.utils import get_time_diff
 from users.app_settings import REFRESH_TIME_IN_MINUTES
-from users.utils import create_new_access_token
+from users.utils import create_new_access_token, mail_user_activation_key
 from users.models import Profile, User, UserFollower
 from users.serializers import UserProfileSerializer, UserSerializer,\
     UserDetailSerializer, UserProfileCreateSerializer, UserAuthDetailsSerializer,\
@@ -238,8 +240,15 @@ class UserCreateViewset(viewsets.ModelViewSet):
         if serializer.is_valid():
             user = get_user_model().objects.create_user(**serializer.data)
             user.set_password(data.get('password'))
+            user.is_active = False
             user.save()
 
+            # here generating the activation key
+            activation_key = str(uuid.uuid4())
+            user.activation_key = activation_key
+            user.save()
+
+            mail_user_activation_key(user)
             # getting application
             application = Application.objects.get(name="mmb")
 
@@ -286,13 +295,3 @@ class PasswordChangeView(GenericAPIView):
         serializer.save()
         return Response({"msg": "New password has been updated successfully",
                          "success": True})
-
-
-
-
-
-
-
-
-
-

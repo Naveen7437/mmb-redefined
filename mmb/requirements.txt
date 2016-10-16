@@ -39,4 +39,6 @@ unidecode==0.4.9
 mutagen==1.34.1
 pillow==3.3.1
 elasticsearch==2.4.0
+sendgrid-django==2.0.0
+sendgrid==2.2.1
 python-resize-image==1.1.3

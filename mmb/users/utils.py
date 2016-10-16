@@ -1,5 +1,7 @@
 import requests
 from django.core.files.base import ContentFile
+from django.core.mail import send_mail
+from django.conf import settings
 from requests import request, ConnectionError
 
 
@@ -31,7 +33,7 @@ def create_new_access_token(oauth_obj):
     result = requests.post(ACCESS_FROM_REFRESH_URL, data=payload)
 
     if result.status_code == 200:
-        # TODO: hitting angular to return new  access token token
+        # TODO: hitting ???
         print (result.content)
 
     return
@@ -84,4 +86,17 @@ def save_user_picture(backend, user, response, is_new,  *args, **kwargs):
                              )
             user.save()
 
+
+def mail_user_activation_key(user):
+    """
+    mail user for account verification
+    """
+
+    link = "{0}/users/activate/{1}".format(settings.APP_URL, user.activation_key)
+    # TODO: update subject and message and move to task
+    subject = "Activate your mmb account"
+    message = "<b>hola</b>" \
+              "<href>{0}</href>".format(link)
+    to = [user.email]
+    send_mail(subject, message, 'khnaveen01@gmail.com', to, fail_silently=False)
 

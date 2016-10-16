@@ -57,6 +57,9 @@ def set_song_duration(sender, instance=None, created=False, **kwargs):
 
 
 class SongLike(models.Model):
+    """
+
+    """
     user = models.ForeignKey(AUTH_USER_MODEL, null=True, blank=True, default=None)
     band = models.ForeignKey(Band, null=True, blank=True, default=None)
     song = models.ForeignKey(Song)

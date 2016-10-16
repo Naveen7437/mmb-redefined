@@ -49,6 +49,7 @@ class User(AbstractUser):
     """
     name = models.CharField(blank=True, max_length=255)
     type = models.CharField(max_length=10, choices=USER_TYPE, default='Listener')
+    activation_key = models.CharField(max_length=127, blank=True)
     avatar = models.ImageField(upload_to=get_upload_file_name,
                                 default="images/user/default.jpeg", blank=True)
 
@@ -156,48 +157,3 @@ class UserFollower(models.Model):
     def __str__(self):
         return '{} - {}'.format(self.follower.username, self.following.name)
 
-
-# class PasswordResetView(GenericAPIView):
-#
-#     """
-#     Calls Django Auth PasswordResetForm save method.
-#     Accepts the following POST parameters: email
-#     Returns the success/fail message.
-#     """
-#
-#     serializer_class = PasswordResetSerializer
-#     permission_classes = (AllowAny,)
-#
-#     def post(self, request, *args, **kwargs):
-#         # Create a serializer with request.data
-#         serializer = self.get_serializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#
-#         serializer.save()
-#         # Return the success message with OK HTTP status
-#         return Response(
-#             {"success": _("Password reset e-mail has been sent.")},
-#             status=status.HTTP_200_OK
-#         )
-#
-#
-# class PasswordResetConfirmView(GenericAPIView):
-#     """
-#     Password reset e-mail link is confirmed, therefore this resets the user's password.
-#     Accepts the following POST parameters: new_password1, new_password2
-#     Accepts the following Django URL arguments: token, uid
-#     Returns the success/fail message.
-#     """
-#
-#     serializer_class = PasswordResetConfirmSerializer
-#     permission_classes = (AllowAny,)
-#
-#     def post(self, request):
-#         serializer = self.get_serializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-#         return Response({"success": _("Password has been reset with the new password.")})
-#
-#
-
-#

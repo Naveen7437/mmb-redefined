@@ -132,6 +132,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
     """
 
     """
+    email = serializers.CharField(required=True)
+    username = serializers.CharField(required=True)
+
     class Meta:
         model = get_user_model()
         fields = (
