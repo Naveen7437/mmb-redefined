@@ -51,7 +51,7 @@ class User(AbstractUser):
     type = models.CharField(max_length=10, choices=USER_TYPE, default='Listener')
     activation_key = models.CharField(max_length=127, blank=True)
     avatar = models.ImageField(upload_to=get_upload_file_name,
-                                default="images/user/default.jpeg", blank=True)
+                               default="images/user/default.jpeg", blank=True)
 
     def __str__(self):
         return self.username
@@ -116,7 +116,7 @@ class Profile(models.Model):
     user = models.ForeignKey(User, unique=True)
     genre = models.ManyToManyField(Genre, blank=True, null=True)
     instrument = models.ManyToManyField(Instrument, blank=True, null=True)
-    # todo - need list of all colleges if possible
+    # TODO: - need list of all colleges if possible
     college = models.CharField(max_length=100, blank=True, null=True)
     current_city = models.CharField(choices=CITIES, max_length=50, blank=True, null=True)
     phone = models.CharField(max_length=10, blank=True, null=True)
@@ -127,9 +127,10 @@ class Profile(models.Model):
     join_band = models.BooleanField(default=False)
     with_band = models.BooleanField(default=False)
     create_band = models.BooleanField(default=False)
-
     about_me = models.CharField(max_length=255, blank=True, null=True)
-    # other_link = models.CharField(max_length=255, blank=True, null=True)    #This is the link which user updates
+    fb_link = models.CharField(max_length=255, blank=True, null=True)    # This is the facebook link which user updates
+    twitter_link = models.CharField(max_length=255, blank=True, null=True)  # This is the link which user updates
+    google_link = models.CharField(max_length=255, blank=True, null=True)   # This is the link which user updates
 
     def __str__(self):
         return str(self.user)
