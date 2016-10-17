@@ -55,14 +55,29 @@ def set_song_duration(sender, instance=None, created=False, **kwargs):
         instance.save()
 
 
-
 class SongLike(models.Model):
-    """
-
-    """
     user = models.ForeignKey(AUTH_USER_MODEL, null=True, blank=True, default=None)
     band = models.ForeignKey(Band, null=True, blank=True, default=None)
     song = models.ForeignKey(Song)
 
     def __str__(self):
         return '{} - {}'.format(self.user.username, self.song.name)
+
+
+class PlayList(models.Model):
+    name = models.CharField(max_length=255)
+    user = models.ForeignKey(AUTH_USER_MODEL)
+    song = models.ManyToManyField(Song, through="PlayListTrack")
+
+    def __str__(self):
+        return '{} - {}'.format(self.name, self.user.username)
+
+
+class PlayListTrack(models.Model):
+    song = models.ForeignKey(Song)
+    playlist = models.ForeignKey(PlayList)
+    # order = models.IntegerField()
+
+    # class Meta:
+    #     ordering = ['order']
+
