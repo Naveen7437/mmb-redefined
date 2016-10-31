@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 from bands.models import Band
-from muse.models import SongLike, Song
+from muse.models import SongLike, Song, PlayListTrack, PlayList
 from muse.utils import check_for_session
 
 
@@ -83,3 +83,19 @@ class UploadSongForm(forms.Form):
             return file
         else:
             raise ValidationError("Couldn't read uploaded file")
+
+
+class PlayListTrackSerializer(serializers.ModelSerializer):
+    """
+
+    """
+    class Meta:
+        model = PlayListTrack
+
+
+class PlayListSerializer(serializers.ModelSerializer):
+    """
+
+    """
+    class Meta:
+        model = PlayList

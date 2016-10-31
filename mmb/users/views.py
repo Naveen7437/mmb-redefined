@@ -189,9 +189,6 @@ class UserViewset(viewsets.ModelViewSet):
         response['success'] = True
         return Response(response, status=status.HTTP_200_OK)
 
-
-
-
     # def update_profile_pic(self, request, *args, **kwargs):
     #     """
     #     api to update the avatar of user
@@ -212,7 +209,6 @@ class UserViewset(viewsets.ModelViewSet):
     #         response["success"] = True
     #
     #     return Response(response, status=status.HTTP_200_OK)
-
 
 
 class UserFollowerViewset(viewsets.ModelViewSet):

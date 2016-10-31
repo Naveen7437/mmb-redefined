@@ -8,8 +8,9 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework_social_oauth2.authentication import SocialAuthentication
 
 from bands.models import Band
-from muse.models import Song, SongLike
-from muse.serializers import SongSerializer, SongLikeSerializer, UploadSongForm
+from muse.models import Song, SongLike, PlayList, PlayListTrack
+from muse.serializers import SongSerializer, SongLikeSerializer,\
+    UploadSongForm, PlayListSerializer, PlayListTrackSerializer
 from django.contrib.auth import get_user_model
 from users.views import RefreshOauthAuthentication
 
@@ -114,3 +115,17 @@ class SongLikeViewset(viewsets.ModelViewSet):
 
         return Response(response)
 
+
+class PlayListViewset(viewsets.ModelViewSet):
+    """
+
+    """
+    serializer_class = PlayListSerializer
+    queryset = PlayList.objects.all()
+
+class PlayListTrackViewset(viewsets.ModelViewSet):
+    """
+
+    """
+    serializer_class = PlayListTrackSerializer
+    queryset = PlayListTrack.objects.all()

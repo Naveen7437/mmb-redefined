@@ -114,8 +114,8 @@ class User(AbstractUser):
 
 class Profile(models.Model):
     user = models.ForeignKey(User, unique=True)
-    genre = models.ManyToManyField(Genre, blank=True, null=True)
-    instrument = models.ManyToManyField(Instrument, blank=True, null=True)
+    genre = models.ManyToManyField(Genre, blank=True)
+    instrument = models.ManyToManyField(Instrument, blank=True)
     # TODO: - need list of all colleges if possible
     college = models.CharField(max_length=100, blank=True, null=True)
     current_city = models.CharField(choices=CITIES, max_length=50, blank=True, null=True)
