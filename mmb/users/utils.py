@@ -75,15 +75,17 @@ def save_user_picture(backend, user, response, is_new,  *args, **kwargs):
         url = 'http://graph.facebook.com/{0}/picture'.format(response['id'])
 
         try:
-            response = request('GET', url, params={'type': 'large'})
-            response.raise_for_status()
+            resp = request('GET', url, params={'type': 'large'})
+            resp.raise_for_status()
         except ConnectionError:
             pass
         else:
             user.avatar.save(u'',
-                             ContentFile(response.content),
+                             ContentFile(resp.content),
                              save=False
                              )
+            user.fb_link = response['link']
+            user.gender = response['gender']
             user.save()
 
 

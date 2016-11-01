@@ -18,6 +18,10 @@ USER_TYPE = [
     ('Musician', 'Musician')
 ]
 
+GENDER = [
+    ('Male', 'Male'),
+    ('Female', 'Female')
+]
 REFRESH_TIME_IN_MINUTES = 30
 
 # TODO: should be moved to settings file

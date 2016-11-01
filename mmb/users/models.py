@@ -21,7 +21,7 @@ from django.db.models.signals import pre_save
 from rest_framework.authtoken.models import Token
 
 from mdata.models import Genre, Instrument
-from .app_settings import CITIES, PHONE_REG, USER_TYPE
+from .app_settings import CITIES, PHONE_REG, USER_TYPE, GENDER
 
 
 def get_upload_file_name(instance, filename):
@@ -48,10 +48,14 @@ class User(AbstractUser):
     User class: adding fields to the user table
     """
     name = models.CharField(blank=True, max_length=255)
+    gender = models.CharField(blank=True, max_length=15, choices=GENDER)
     type = models.CharField(max_length=10, choices=USER_TYPE, default='Listener')
     activation_key = models.CharField(max_length=127, blank=True)
     avatar = models.ImageField(upload_to=get_upload_file_name,
                                default="images/user/default.jpeg", blank=True)
+    fb_link = models.CharField(max_length=255, blank=True, null=True)  # This is the facebook link which user updates
+    twitter_link = models.CharField(max_length=255, blank=True, null=True)  # This is the link which user updates
+    google_link = models.CharField(max_length=255, blank=True, null=True)  # This is the link which user updates
 
     def __str__(self):
         return self.username
@@ -128,9 +132,6 @@ class Profile(models.Model):
     with_band = models.BooleanField(default=False)
     create_band = models.BooleanField(default=False)
     about_me = models.CharField(max_length=255, blank=True, null=True)
-    fb_link = models.CharField(max_length=255, blank=True, null=True)    # This is the facebook link which user updates
-    twitter_link = models.CharField(max_length=255, blank=True, null=True)  # This is the link which user updates
-    google_link = models.CharField(max_length=255, blank=True, null=True)   # This is the link which user updates
 
     def __str__(self):
         return str(self.user)
