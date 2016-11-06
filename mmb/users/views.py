@@ -70,22 +70,22 @@ class UserProfileViewset(viewsets.ModelViewSet):
     filter_fields = ('user',)
     queryset = Profile.objects.all()
 
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-
-        if not queryset:
-            raise Http404
-
-        profile_obj = queryset[0]
-
-        # TODO: change to many=True
-        # page = self.paginate_queryset(queryset)
-        # if page is not None:
-        #     serializer = UserProfileSerializer(page, many=True)
-        #     return self.get_paginated_response(serializer.data)
-
-        serializer = UserProfileSerializer(profile_obj, context={'request': request})
-        return Response(serializer.data)
+    # def list(self, request, *args, **kwargs):
+    #     queryset = self.filter_queryset(self.get_queryset())
+    #
+    #     if not queryset:
+    #         raise Http404
+    #
+    #     profile_obj = queryset[0]
+    #
+    #     # TODO: change to many=True
+    #     # page = self.paginate_queryset(queryset)
+    #     # if page is not None:
+    #     #     serializer = UserProfileSerializer(page, many=True)
+    #     #     return self.get_paginated_response(serializer.data)
+    #
+    #     serializer = UserProfileSerializer(profile_obj, context={'request': request})
+    #     return Response(serializer.data)
 
     def get_profile(self, request, *args, **kwargs):
         """
