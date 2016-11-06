@@ -186,7 +186,7 @@ SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
 SOCIAL_AUTH_FACEBOOK_KEY = '1477614369199719'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'b0640dd8b30ed4e39a795fac20a18263'
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email','user_friends','public_profile','user_interests','user_birthday','user_about_me','user_birthday','user_location']
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email','user_friends','public_profile','user_interests','user_birthday','user_about_me','user_location']
 # SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 #   'locale': 'ru_RU',
 #   'fields': 'id, name, email, age_range, picture'

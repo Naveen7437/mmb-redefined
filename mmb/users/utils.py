@@ -6,6 +6,7 @@ from requests import request, ConnectionError
 
 
 from users.app_settings import ACCESS_FROM_REFRESH_URL
+from users.models import Profile
 
 
 def create_new_access_token(oauth_obj):
@@ -84,9 +85,13 @@ def save_user_picture(backend, user, response, is_new,  *args, **kwargs):
                              ContentFile(resp.content),
                              save=False
                              )
-            user.fb_link = response['link']
+
             user.gender = response['gender']
             user.save()
+
+            profile = Profile(user=user)
+            profile.fb_link = response['link']
+            profile.save()
 
 
 def mail_user_activation_key(user):

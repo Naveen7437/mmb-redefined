@@ -53,9 +53,6 @@ class User(AbstractUser):
     activation_key = models.CharField(max_length=127, blank=True)
     avatar = models.ImageField(upload_to=get_upload_file_name,
                                default="images/user/default.jpeg", blank=True)
-    fb_link = models.CharField(max_length=255, blank=True, null=True)  # This is the facebook link which user updates
-    twitter_link = models.CharField(max_length=255, blank=True, null=True)  # This is the link which user updates
-    google_link = models.CharField(max_length=255, blank=True, null=True)  # This is the link which user updates
 
     def __str__(self):
         return self.username
@@ -132,6 +129,10 @@ class Profile(models.Model):
     with_band = models.BooleanField(default=False)
     create_band = models.BooleanField(default=False)
     about_me = models.CharField(max_length=255, blank=True, null=True)
+    fb_link = models.CharField(max_length=255, blank=True, null=True)  # This is the facebook link which user updates
+    twitter_link = models.CharField(max_length=255, blank=True, null=True)  # This is the link which user updates
+    google_link = models.CharField(max_length=255, blank=True, null=True)  # This is the link which user updates
+
 
     def __str__(self):
         return str(self.user)

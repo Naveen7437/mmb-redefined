@@ -87,6 +87,30 @@ class UserProfileViewset(viewsets.ModelViewSet):
         serializer = UserProfileSerializer(profile_obj, context={'request': request})
         return Response(serializer.data)
 
+    def get_profile(self, request, *args, **kwargs):
+        """
+
+        """
+        response = {}
+        id = request.query_params.get('user', None)
+
+        try:
+            id = int(id)
+            user = get_user_model().objects.get(id=id)
+        except:
+            response['detail'] = "invalid user ids"
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            profile = Profile.objects.get(user=user)
+        except Profile.DoesNotExist:
+            profile = Profile(user=user)
+            profile.save()
+
+        serializer = UserProfileSerializer(profile, context={'request': request})
+        return Response(serializer.data)
+
+
     def user_thumbnail_details(self, request):
         """
         api to return details of user thumbnail
