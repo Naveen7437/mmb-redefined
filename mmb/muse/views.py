@@ -86,8 +86,8 @@ class SongLikeViewset(viewsets.ModelViewSet):
     """
 
     """
-    authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
+    # permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = SongLikeSerializer
     queryset = SongLike.objects.all()
 
@@ -110,8 +110,8 @@ class SongLikeViewset(viewsets.ModelViewSet):
             SongLike.objects.get(user__id=user_id, song__id=song_id)
             response['error'] = "object already exists"
         except SongLike.DoesNotExist:
-            SongLike.objects.create(user_id=user_id, song_id=song_id)
-            response = serializer.data
+            obj = SongLike.objects.create(user_id=user_id, song_id=song_id)
+            response = SongLikeSerializer(obj).data
 
         return Response(response)
 
