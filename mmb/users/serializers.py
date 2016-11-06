@@ -44,14 +44,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         user = request.user
         if user.is_anonymous():
-            return False
+            return None
 
         try:
-            UserFollower.objects.get(follower=user, following=obj.user)
+            user_follower = UserFollower.objects.get(follower=user, following=obj.user)
         except UserFollower.DoesNotExist:
-            return False
+            return None
 
-        return True
+        return user_follower.id
 
     class Meta:
         model = Profile

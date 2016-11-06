@@ -12,7 +12,7 @@ class SongSerializer(serializers.ModelSerializer):
     """
 
     """
-    liked = serializers.SerializerMethodField('song_liked_by_user')
+    song_like_id = serializers.SerializerMethodField('song_liked_by_user')
     full_name = serializers.CharField(source='user.get_full_name',
                                       required=False, read_only=True)
     username = serializers.CharField(source='user.username', required=False,
@@ -34,16 +34,16 @@ class SongSerializer(serializers.ModelSerializer):
         if is_band and band_id:
             band = Band.objects.get(id=band_id)
             try:
-                SongLike.objects.get(band=band, song=obj)
+                song_like = SongLike.objects.get(band=band, song=obj)
             except SongLike.DoesNotExist:
-                return False
-            return True
+                return None
+            return song_like.id
         else:
             try:
-                SongLike.objects.get(user__id=user.id, song=obj)
+                song_like = SongLike.objects.get(user__id=user.id, song=obj)
             except SongLike.DoesNotExist:
-                return False
-            return True
+                return None
+            return song_like.id
 
     class Meta:
         model = Song
