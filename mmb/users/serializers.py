@@ -24,6 +24,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField("get_avatar_url")
     genre = GenreSerializer(many=True, read_only=True)
     instrument = InstrumentSerializer(many=True, read_only=True)
+    is_follower = serializers.SerializerMethodField('followed_by_user')
 
     def get_avatar_url(self, obj):
         """
@@ -34,9 +35,26 @@ class UserProfileSerializer(serializers.ModelSerializer):
             url = self.context.get('request').build_absolute_uri(obj.user.avatar.url)
         return url
 
+    def followed_by_user(self, obj):
+        """
+
+        :param obj:
+        :return:
+        """
+        request = self.context.get('request')
+        user = request.user
+        if user.is_anonymous():
+            return False
+
+        try:
+            UserFollower.objects.get(follower=user, following=obj.user)
+        except UserFollower.DoesNotExist:
+            return False
+
+        return True
+
     class Meta:
         model = Profile
-
 
 class UserSerializer(serializers.ModelSerializer):
     """
