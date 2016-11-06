@@ -24,7 +24,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField("get_avatar_url")
     genre = GenreSerializer(many=True, read_only=True)
     instrument = InstrumentSerializer(many=True, read_only=True)
-    is_follower = serializers.SerializerMethodField('followed_by_user')
+    follow_id = serializers.SerializerMethodField('followed_by_user')
 
     def get_avatar_url(self, obj):
         """
