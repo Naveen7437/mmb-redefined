@@ -114,7 +114,7 @@ class User(AbstractUser):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.OneToOneField(User)
     genre = models.ManyToManyField(Genre, blank=True)
     instrument = models.ManyToManyField(Instrument, blank=True)
     # TODO: - need list of all colleges if possible
