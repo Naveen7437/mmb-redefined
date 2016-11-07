@@ -107,10 +107,12 @@ class UserDetailSerializer(serializers.ModelSerializer):
     """
     serializes the thumbnail details of a user
     """
-    user_name = serializers.CharField(source='username', required=False, read_only=True)
-    first_name = serializers.CharField(source='firstname', required=False, read_only=True)
-    last_name = serializers.CharField(source='lastname', required=False, read_only=True)
-    is_follower = serializers.SerializerMethodField('followed_by_user')
+    username = serializers.CharField(source='user.username', required=False, read_only=True)
+    full_name = serializers.CharField(source='user.get_full_name', required=False, read_only=True)
+    follow_id = serializers.SerializerMethodField('followed_by_user')
+    avatar = serializers.SerializerMethodField("get_avatar_url")
+    genre = GenreSerializer(many=True, read_only=True)
+    instrument = InstrumentSerializer(many=True, read_only=True)
 
     def followed_by_user(self, obj):
         """
@@ -124,18 +126,23 @@ class UserDetailSerializer(serializers.ModelSerializer):
             return None
 
         try:
-            UserFollower.objects.get(follower=user, following=obj.user)
+            user_follower = UserFollower.objects.get(follower=user, following=obj.user)
         except UserFollower.DoesNotExist:
-            return False
+            return None
 
-        return True
+        return user_follower.id
 
+    def get_avatar_url(self, obj):
+        """
+        return absolute url of avatar
+        """
+        url = ''
+        if obj.user.avatar:
+            url = self.context.get('request').build_absolute_uri(obj.user.avatar.url)
+        return url
 
     class Meta:
         model = Profile
-
-        fields = ('user_name', 'first_name', 'last_name', 'instrument',
-                  'followed_by_count', 'is_follower')
 
 
 class UserFollowerSerializer(serializers.ModelSerializer):
