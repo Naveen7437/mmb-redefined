@@ -4,12 +4,10 @@ from rest_framework import routers
 from users.views import UserProfileViewset, UserViewset, UserFollowerViewset,\
     UserCreateViewset, PasswordChangeView, activate_user
 
-
 router = routers.DefaultRouter()
 router.register(r'profile', UserProfileViewset)
 router.register(r'user', UserViewset)
 router.register(r'follow', UserFollowerViewset)
-
 
 urlpatterns = [
     url(r'^', include(router.urls)),
@@ -20,6 +18,6 @@ urlpatterns = [
     url(r'^update-pic/$', UserViewset.as_view({"put": "update_profile_pic"})),
     url(r'^create/$', UserCreateViewset.as_view({"post": "create"})),
     url(r'^password/change/$', PasswordChangeView.as_view(), name='password_change'),
-    url(r'^activate/(?P<key>.+)$', activate_user),
+    url(r'^activate/(?P<key>.+)$', activate_user)
 ]
 

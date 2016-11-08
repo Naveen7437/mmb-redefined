@@ -244,6 +244,31 @@ class UserFollowerViewset(viewsets.ModelViewSet):
     serializer_class = UserFollowerSerializer
     queryset = UserFollower.objects.all()
 
+    def create(self, request, *args, **kwargs):
+        """
+
+        """
+        response = {}
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # logged in user
+        follower_id = serializer.data.get('follower')
+        following_id = serializer.data.get('following')
+
+        if not (follower_id and following_id) or (follower_id == following_id):
+            return Response({'error': 'Invalid request'})
+
+        try:
+            UserFollower.objects.get(follower__id=follower_id, following__id=following_id)
+            response['error'] = "object already exists"
+        except UserFollower.DoesNotExist:
+            obj = UserFollower.objects.create(follower_id=follower_id, following_id=following_id)
+            response = UserFollowerSerializer(obj).data
+
+        return Response(response)
+
 
 class UserCreateViewset(viewsets.ModelViewSet):
     """
@@ -318,7 +343,6 @@ class PasswordChangeView(GenericAPIView):
         serializer.save()
         return Response({"msg": "New password has been updated successfully",
                          "success": True})
-
 
 
 def activate_user(request, unique_id):

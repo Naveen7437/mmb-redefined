@@ -21,6 +21,7 @@ from django.db.models.signals import pre_save
 from rest_framework.authtoken.models import Token
 
 from mdata.models import Genre, Instrument
+from mmb.settings import AUTH_USER_MODEL
 from .app_settings import CITIES, PHONE_REG, USER_TYPE, GENDER
 
 
@@ -151,12 +152,12 @@ class UserFollower(models.Model):
 
     """
     # one who follows
-    follower = models.ForeignKey(User, related_name='follower')
+    follower = models.ForeignKey(AUTH_USER_MODEL, related_name='follower')
 
     # one who is being followed
-    following = models.ForeignKey(User, related_name='following')
+    following = models.ForeignKey(AUTH_USER_MODEL, related_name='following')
     # following_is_user = models.BooleanField()
 
     def __str__(self):
-        return '{} - {}'.format(self.follower.username, self.following.name)
+        return '{} - {}'.format(self.follower.username, self.following.username)
 
