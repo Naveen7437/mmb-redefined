@@ -63,10 +63,10 @@ class SongViewset(viewsets.ModelViewSet):
                 song.tags = tags
                 song.save()
                 response = SongSerializer(song, context={'request': request}).data
-            except:
-                response['error'] = "TODO: fuck error(valid)"
+            except Exception as e:
+                response['error'] = "Error in uploading song {}".format(e)
         else:
-            response['error'] = "TODO: fuck error(invalid)"
+            response['error'] = form.errors
         return Response(response)
 
     def get_queryset(self):
