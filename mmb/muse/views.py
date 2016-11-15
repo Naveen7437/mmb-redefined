@@ -1,4 +1,5 @@
 import copy
+from django.contrib.auth import get_user_model
 from rest_framework import viewsets, status
 from rest_framework import filters
 from rest_framework.response import Response
@@ -6,13 +7,16 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework_social_oauth2.authentication import SocialAuthentication
+# from django.http.multipartparser import MultiPartParser
 
 from bands.models import Band
 from muse.models import Song, SongLike, PlayList, PlayListTrack
 from muse.serializers import SongSerializer, SongLikeSerializer,\
     UploadSongForm, PlayListSerializer, PlayListTrackSerializer
-from django.contrib.auth import get_user_model
+
+from muse.utils import MultiPartJSONParser
 from users.views import RefreshOauthAuthentication
+
 
 
 class SongViewset(viewsets.ModelViewSet):
@@ -22,9 +26,9 @@ class SongViewset(viewsets.ModelViewSet):
     # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
     # permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = SongSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('name', 'user')
-    # parser_classes = (MultiPartParser, FormParser)
+    # filter_backends = (filters.DjangoFilterBackend,)
+    # filter_fields = ('name', 'user')
+    parser_classes = (MultiPartJSONParser, )
     queryset = Song.objects.all()
 
     def get_serializer_context(self):
@@ -40,22 +44,21 @@ class SongViewset(viewsets.ModelViewSet):
         """
         response = {}
         user = request.user
-
         # TODO: to be removed
         if user.is_anonymous():
             user = get_user_model().objects.get(username='admin')
 
-        name = request.POST.get('name')
-        tags = request.POST.get('tags')
+        name = request.stream.POST.get('name')
+        tags = request.stream.POST.get('tags')
 
         # TODO: for now using form as validation only
-        form = UploadSongForm(request.POST, request.FILES)
+        form = UploadSongForm(request.stream.POST, request.stream.FILES)
 
         if form.is_valid():
             try:
                 song = Song()
                 song.user = user
-                song.upload = request.FILES.get('upload')
+                song.upload = request.stream.FILES.get('upload')
                 song.name = name
                 song.tags = tags
                 song.save()

@@ -26,6 +26,9 @@ class SongSerializer(serializers.ModelSerializer):
 
         request = self.context.get('request')
         user = request.user
+        if user.is_anonymous():
+            from django.contrib.auth import get_user_model
+            user = get_user_model().objects.get(username='admin')
 
         # checking for user/band the session
         is_band, band_id = check_for_session(request)
