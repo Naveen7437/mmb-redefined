@@ -1,7 +1,9 @@
 import requests
 from django.core.files.base import ContentFile
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from django.template import Context
+from django.template.loader import render_to_string
 from requests import request, ConnectionError
 
 
@@ -94,16 +96,19 @@ def save_user_picture(backend, user, response, is_new,  *args, **kwargs):
             profile.save()
 
 
-def mail_user_activation_key(user):
+def mail_user_activation_key(user=None):
     """
     mail user for account verification
     """
 
-    link = "{0}/users/activate/{1}".format(settings.APP_URL, user.activation_key)
+    # link = "{0}/users/activate/{1}".format(settings.APP_URL, user.activation_key)
     # TODO: update subject and message and move to task
     subject = "Activate your mmb account"
-    message = "<b>hola</b>" \
-              "<href>{0}</href>".format(link)
-    to = [user.email]
-    send_mail(subject, message, 'khnaveen01@gmail.com', to, fail_silently=False)
-
+    from_email = "khnaveen01@gmail.com"
+    # c = Context({"link": link})
+    text_content = render_to_string('email.txt')
+    html_content = render_to_string('email.html')
+    to = ["naveenkh7437@gmail.com"]
+    mail = EmailMultiAlternatives(subject, text_content, from_email, to)
+    mail.attach_alternative(html_content, "text/html")
+    mail.send()
