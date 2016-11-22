@@ -26,8 +26,8 @@ class SongViewset(viewsets.ModelViewSet):
     # authentication_classes = (RefreshOauthAuthentication, SocialAuthentication)
     # permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = SongSerializer
-    # filter_backends = (filters.DjangoFilterBackend,)
-    # filter_fields = ('name', 'user')
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('name', 'user')
     parser_classes = (MultiPartJSONParser, )
     queryset = Song.objects.all()
 
