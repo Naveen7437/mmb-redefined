@@ -31,7 +31,7 @@ class BandSerializer(serializers.ModelSerializer):
         obj.save()
         for genre in validated_data.get('genre'):
             obj.genre.add(genre)
-            
+
         return obj
 
 

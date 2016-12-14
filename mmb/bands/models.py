@@ -17,7 +17,7 @@ class Band(models.Model):
     genre = models.ManyToManyField(Genre)
     member = models.ManyToManyField(AUTH_USER_MODEL, through='BandMember')
     # vacancy = models.ManyToManyField(Instrument)
-    location = models.CharField(choices=CITIES, max_length=50, blank=True, null=True)
+    location = models.CharField(max_length=50, blank=True, null=True)
     label = models.CharField(max_length=50, blank=True, null=True)
     follower_count = models.IntegerField(default=0)
     year = models.IntegerField(_('year'), choices=YEAR_CHOICES, default=datetime.now().year)
