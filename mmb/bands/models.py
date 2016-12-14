@@ -13,7 +13,7 @@ def get_upload_file_name(instance, filename):
 
 
 class Band(models.Model):
-    name = models.CharField(unique=True, max_length=255)
+    name = models.CharField(max_length=255)
     genre = models.ManyToManyField(Genre)
     member = models.ManyToManyField(AUTH_USER_MODEL, through='BandMember')
     # vacancy = models.ManyToManyField(Instrument)

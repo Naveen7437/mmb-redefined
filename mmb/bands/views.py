@@ -19,6 +19,9 @@ class BandViewset(viewsets.ModelViewSet):
     serializer_class = BandSerializer
     queryset = Band.objects.all()
 
+    def get_serializer_context(self):
+        return {'request': self.request}
+
 
 class BandMemberViewset(viewsets.ModelViewSet):
     """
