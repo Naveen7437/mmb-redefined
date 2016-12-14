@@ -47,6 +47,27 @@ class BandFollowersViewset(viewsets.ModelViewSet):
     filter_fields = ('following_band',)
     queryset = BandFollowers.objects.all()
 
+    def create(self, request, *args, **kwargs):
+        response = {}
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        following_band = serializer.data.get('following_band')
+        follower = serializer.data.get('follower')
+
+        if not (following_band and follower):
+            return Response({'error': 'Invalid request'})
+
+        try:
+            BandFollowers.objects.get(following_band__id=following_band, follower__id=follower)
+            response['error'] = "object already exists"
+        except BandFollowers.DoesNotExist:
+            obj = BandFollowers.objects.create(following_band_id=following_band, follower_id=follower)
+            response = BandFollowersSerializer(obj).data
+
+        return Response(response)
+
 
 
 class BandVacancyViewset(viewsets.ModelViewSet):
