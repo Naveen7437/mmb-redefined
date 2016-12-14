@@ -63,8 +63,10 @@ class BandVacancyApplication(models.Model):
 
 
 class BandFollowers(models.Model):
+    # user following band
     follower = models.ForeignKey(AUTH_USER_MODEL, related_name='band_follower')
+    # band to be followed
     following_band = models.ForeignKey(Band, related_name='band_following')
 
     def __str__(self):
-        return '{} - {}'.format(self.follower.username, self.following.name)
+        return '{} - {}'.format(self.follower.username, self.following_band.name)

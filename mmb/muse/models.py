@@ -68,6 +68,8 @@ class PlayList(models.Model):
     name = models.CharField(max_length=255)
     user = models.ForeignKey(AUTH_USER_MODEL)
     song = models.ManyToManyField(Song, through="PlayListTrack")
+    # created_at = models.DateTimeField(auto_now_add=True)
+    # updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return '{} - {}'.format(self.name, self.user.username)
@@ -80,4 +82,3 @@ class PlayListTrack(models.Model):
 
     # class Meta:
     #     ordering = ['order']
-

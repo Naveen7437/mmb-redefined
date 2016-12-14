@@ -27,7 +27,10 @@ class BandMemberViewset(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication,)
     # #permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandMemberSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('band',)
     queryset = BandMember.objects.all()
+
 
 
 class BandFollowersViewset(viewsets.ModelViewSet):
@@ -37,7 +40,10 @@ class BandFollowersViewset(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication,)
     # #permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandFollowersSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('following_band',)
     queryset = BandFollowers.objects.all()
+
 
 
 class BandVacancyViewset(viewsets.ModelViewSet):
@@ -47,4 +53,7 @@ class BandVacancyViewset(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication,)
     # #permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandVacancySerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('band',)
     queryset = BandVacancy.objects.all()
+

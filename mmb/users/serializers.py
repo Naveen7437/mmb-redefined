@@ -70,7 +70,7 @@ class UserSerializer(serializers.ModelSerializer):
 # Todo: temporary solution, to be removed
 class UserAuthDetailsSerializer(serializers.ModelSerializer):
     """
-
+    user auth detail
     """
     is_new = serializers.SerializerMethodField('check_new_user')
     avatar = serializers.SerializerMethodField("get_avatar_url")
@@ -147,7 +147,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
 class UserFollowerSerializer(serializers.ModelSerializer):
     """
-
+    serializer to follow user
     """
     class Meta:
         model = UserFollower
@@ -155,7 +155,7 @@ class UserFollowerSerializer(serializers.ModelSerializer):
 
 class UserCreateSerializer(serializers.ModelSerializer):
     """
-
+    serializer to create user
     """
     email = serializers.CharField(required=True)
     username = serializers.CharField(required=True)
