@@ -56,6 +56,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
 
+
 class UserSerializer(serializers.ModelSerializer):
     """
     returns basic user details
@@ -213,3 +214,9 @@ class PasswordChangeSerializer(serializers.Serializer):
     def save(self):
         self.set_password_form.save()
 
+
+class UserInstrumentSerilaizer(serializers.Serializer):
+    """
+    serializes only the user instruments
+    """
+    instrument = InstrumentSerializer(many=True, read_only=True)

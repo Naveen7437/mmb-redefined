@@ -19,3 +19,8 @@ CITIES = (
 SONG_TAGS = [
     ('love song', 'love song'),
 ]
+
+ACCESS_CHOICES = [
+    ('admin', 'admin'),
+    ('basic', 'basic')
+    ]

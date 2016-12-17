@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 
 from rest_framework import viewsets, status, filters
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 # from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
@@ -26,7 +27,8 @@ from users.utils import create_new_access_token, mail_user_activation_key
 from users.models import Profile, User, UserFollower
 from users.serializers import UserProfileSerializer, UserSerializer,\
     UserDetailSerializer, UserProfileCreateSerializer, UserAuthDetailsSerializer,\
-    UserFollowerSerializer, UserCreateSerializer, PasswordChangeSerializer
+    UserFollowerSerializer, UserCreateSerializer, PasswordChangeSerializer,\
+    UserInstrumentSerilaizer
 
 expires = datetime.now() + timedelta(seconds=settings.OAUTH2_PROVIDER['ACCESS_TOKEN_EXPIRE_SECONDS'])
 
@@ -358,3 +360,17 @@ def activate_user(request, unique_id):
     # TODO: adding redirect url here to login view
     return HttpResponseRedirect("htps://google.com")
 
+
+@api_view(['GET'])
+def get_user_instrument(request, user_id):
+    """
+    fetches the insrument of a user
+    """
+    try:
+        profile = Profile.objects.get(user__id=user_id)
+    except Profile.DoesNotExist:
+        return Response({"detail": "invalid user id"})
+
+    if request.method == 'GET':
+        serializer = UserInstrumentSerilaizer(profile)
+        return Response(serializer.data)

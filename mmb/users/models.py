@@ -28,11 +28,11 @@ from .app_settings import CITIES, PHONE_REG, USER_TYPE, GENDER
 def get_upload_file_name(instance, filename):
     """
     function to set path for uploading images
-    """
-    if not isinstance(filename, str):
-        map(filename, str)
-
-    filename = unidecode(smart_text(filename))
+    # """
+    # if not isinstance(filename, str):
+    #     map(filename, str)
+    #
+    # filename = unidecode(smart_text(filename))
 
     # if instance.band:
     #     id = instance.band.id
