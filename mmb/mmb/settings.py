@@ -51,6 +51,7 @@ THIRD_PARTY_APPS = (
     'social.apps.django_app.default',
     'rest_framework_social_oauth2',
     'djcelery',
+    'corsheaders'
 )
 
 MMB_APPS = (
@@ -64,6 +65,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + MMB_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
