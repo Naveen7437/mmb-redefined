@@ -74,7 +74,8 @@ class User(AbstractUser):
             new_image.save(new_image_io, format='JPEG')
 
             temp_name = self.avatar.name
-            self.avatar.delete(save=False)
+            # commenting it for now "Permission Error"
+            # self.avatar.delete(save=False)
 
             self.avatar.save(
                 temp_name,
