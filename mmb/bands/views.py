@@ -12,8 +12,8 @@ from bands.serializers import BandFollowersSerializer, BandSerializer,\
 
 class BandViewset(viewsets.ModelViewSet):
     """
-
-   #  """
+    Viewset for the band
+    """
    #  authentication_classes = (TokenAuthentication,)
    # # permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandSerializer
@@ -33,6 +33,29 @@ class BandMemberViewset(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('band',)
     queryset = BandMember.objects.all()
+
+    def get_serializer_context(self):
+        return {'request': self.request}
+
+    def invite(self, request):
+        """
+        invite the member of the band by the email address
+        """
+        response = {}
+        import ipdb;ipdb.set_trace()
+
+        data = request.data
+        email = data.get("email")
+        band = data.get('band')
+        user = data.get('user')
+
+        if not (email and user and band):
+            return Response({"error":  "Invalid/Missing fields"})
+
+        #TODO: create mail and send to user
+
+        return Response({"msg": "mail sent to user successfully",
+                  "success": True})
 
 
 
@@ -80,4 +103,3 @@ class BandVacancyViewset(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('band',)
     queryset = BandVacancy.objects.all()
-

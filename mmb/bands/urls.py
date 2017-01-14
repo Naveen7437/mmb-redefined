@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, url, include
 from rest_framework import routers
-router = routers.SimpleRouter()
 
 from bands.views import BandMemberViewset, BandVacancyViewset, \
     BandViewset, BandFollowersViewset
@@ -14,6 +13,7 @@ router.register(r'member', BandMemberViewset)
 
 
 urlpatterns = [
-    url(r'^', include(router.urls))
+    url(r'^', include(router.urls)),
+    url(r'^invite/$', BandMemberViewset.as_view({"post": "invite"})),
 ]
 
