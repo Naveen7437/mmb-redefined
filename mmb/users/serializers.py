@@ -220,3 +220,24 @@ class UserInstrumentSerilaizer(serializers.Serializer):
     serializes only the user instruments
     """
     instrument = InstrumentSerializer(many=True, read_only=True)
+
+
+class UserMemberSerializer(serializers.Serializer):
+    """
+    serilaizers the user/avatar
+    """
+    username = serializers.CharField(required=False, read_only=True)
+    full_name = serializers.CharField(source='get_full_name', required=False, read_only=True)
+    avatar = serializers.SerializerMethodField("get_avatar_url")
+
+    def get_avatar_url(self, obj):
+        """
+        return absolute url of avatar
+        """
+        url = ''
+        if obj.avatar:
+            url = self.context.get('request').build_absolute_uri(obj.avatar.url)
+        return url
+
+    class Meta:
+        model = get_user_model()
