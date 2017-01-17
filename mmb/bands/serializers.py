@@ -63,3 +63,48 @@ class BandMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = BandMember
 
+
+class UserBandSerializer(serializers.ModelSerializer):
+    """
+
+    """
+    image = serializers.SerializerMethodField("get_image_url")
+
+    def get_image_url(self, obj):
+        """
+        return absolute url of image
+        """
+        url = ''
+        if obj.image:
+            url = self.context.get('request').build_absolute_uri(obj.image.url)
+        return url
+
+
+    class Meta:
+        model = Band
+        fields = ('name', 'image')
+
+
+class UserBandMemberSerializer(serializers.ModelSerializer):
+    """
+
+    """
+    band = UserBandSerializer(read_only=True)
+
+    class Meta:
+        model = BandMember
+        fields = ('band', 'member')
+
+
+
+
+
+
+
+
+
+
+
+
+
+

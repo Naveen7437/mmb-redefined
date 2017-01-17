@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from bands.models import Band, BandVacancy, BandMember, BandFollowers
 from bands.serializers import BandFollowersSerializer, BandSerializer,\
-    BandMemberSerializer, BandVacancySerializer
+    BandMemberSerializer, BandVacancySerializer, UserBandMemberSerializer
 
 
 class BandViewset(viewsets.ModelViewSet):
@@ -103,3 +103,18 @@ class BandVacancyViewset(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('band',)
     queryset = BandVacancy.objects.all()
+
+
+class UserBandMemberViewset(viewsets.ModelViewSet):
+    """
+
+    """
+    # authentication_classes = (TokenAuthentication,)
+    # #permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = UserBandMemberSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('member', 'band')
+    queryset = BandMember.objects.all()
+
+    def get_serializer_context(self):
+        return {'request': self.request}
