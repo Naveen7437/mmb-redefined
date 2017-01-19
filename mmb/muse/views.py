@@ -50,6 +50,13 @@ class SongViewset(viewsets.ModelViewSet):
 
         name = request.stream.POST.get('name')
         tags = request.stream.POST.get('tags')
+        user = request.stream.POST.get('user')
+        band_id = request.stream.POST.get('band')
+        
+        try:
+            band = Band.objects.get(id=band_id)
+        except Band.DoesNotExist:
+            band = None
 
         # TODO: for now using form as validation only
         form = UploadSongForm(request.stream.POST, request.stream.FILES)
@@ -58,6 +65,7 @@ class SongViewset(viewsets.ModelViewSet):
             try:
                 song = Song()
                 song.user = user
+                song.band = band
                 song.upload = request.stream.FILES.get('upload')
                 song.name = name
                 song.tags = tags
