@@ -82,7 +82,7 @@ class UserBandSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Band
-        fields = ('name', 'image')
+        fields = ('id', 'name', 'image')
 
 
 class UserBandMemberSerializer(serializers.ModelSerializer):
