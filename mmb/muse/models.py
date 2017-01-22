@@ -40,9 +40,11 @@ class Song(models.Model):
     rating = models.IntegerField(default=3)
     upload = models.FileField(upload_to=get_upload_file_name)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True, db_index=True)
     duration = models.CharField(max_length=15, blank=True, null=True)
     # singer = models.CharField(blank=True, max_length=255)
     # label = models.CharField(blank=True, max_length=255)
+    # Todo: band song uploaded by
 
     def __str__(self):
         return '{}'.format(self.name)
@@ -59,6 +61,7 @@ class SongLike(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, null=True, blank=True, default=None)
     band = models.ForeignKey(Band, null=True, blank=True, default=None)
     song = models.ForeignKey(Song)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
     def __str__(self):
         return '{} - {}'.format(self.user.username, self.song.name)
@@ -68,8 +71,8 @@ class PlayList(models.Model):
     name = models.CharField(max_length=255)
     user = models.ForeignKey(AUTH_USER_MODEL)
     song = models.ManyToManyField(Song, through="PlayListTrack")
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return '{} - {}'.format(self.name, self.user.username)

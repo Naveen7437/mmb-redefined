@@ -130,10 +130,13 @@ class Profile(models.Model):
     join_band = models.BooleanField(default=False)
     with_band = models.BooleanField(default=False)
     create_band = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True, db_index=True)
     about_me = models.CharField(max_length=255, blank=True, null=True)
     fb_link = models.CharField(max_length=255, blank=True, null=True)  # This is the facebook link which user updates
     twitter_link = models.CharField(max_length=255, blank=True, null=True)  # This is the link which user updates
     google_link = models.CharField(max_length=255, blank=True, null=True)  # This is the link which user updates
+    active = models.BooleanField(default=True)
 
 
     def __str__(self):

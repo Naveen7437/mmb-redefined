@@ -24,3 +24,13 @@ ACCESS_CHOICES = [
     ('admin', 'admin'),
     ('basic', 'basic')
     ]
+
+VACANCY_CHOICES = [
+    ("open", "open"),
+    ("closed", "closed")
+]
+
+ACTIVE_CHOICES = [
+    ("open", "open"),
+    ("closed", "closed")
+]
