@@ -111,7 +111,7 @@ WSGI_APPLICATION = 'mmb.wsgi.application'
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = (
-    ("""Ajay Singh""", 'ajayk40@gmail.com'),
+    ("""Admin""", 'admin@gmail.com'),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
@@ -123,7 +123,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'mmb_db'),
     }
 }
 
