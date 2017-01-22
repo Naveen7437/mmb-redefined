@@ -2,7 +2,8 @@ from django.conf.urls import patterns, url, include
 from rest_framework import routers
 
 from users.views import UserProfileViewset, UserViewset, UserFollowerViewset,\
-    UserCreateViewset, PasswordChangeView, activate_user, get_user_instrument
+    UserCreateViewset, PasswordChangeView, activate_user, get_user_instrument,\
+    PasswordResetView
 
 router = routers.DefaultRouter()
 router.register(r'profile', UserProfileViewset)
@@ -18,6 +19,7 @@ urlpatterns = [
     url(r'^update-pic/$', UserViewset.as_view({"put": "update_profile_pic"})),
     url(r'^create/$', UserCreateViewset.as_view({"post": "create"})),
     url(r'^password/change/$', PasswordChangeView.as_view(), name='password_change'),
+   url(r'^password/reset/$', PasswordResetView.as_view(),name='rest_password_reset'),
     url(r'^activate/(?P<key>.+)$', activate_user),
     url(r'^ins/(?P<user_id>.+)$', get_user_instrument)
 ]

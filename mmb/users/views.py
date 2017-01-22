@@ -28,7 +28,7 @@ from users.models import Profile, User, UserFollower
 from users.serializers import UserProfileSerializer, UserSerializer,\
     UserDetailSerializer, UserProfileCreateSerializer, UserAuthDetailsSerializer,\
     UserFollowerSerializer, UserCreateSerializer, PasswordChangeSerializer,\
-    UserInstrumentSerilaizer
+    UserInstrumentSerilaizer, PasswordResetSerializer
 
 expires = datetime.now() + timedelta(seconds=settings.OAUTH2_PROVIDER['ACCESS_TOKEN_EXPIRE_SECONDS'])
 
@@ -339,12 +339,22 @@ class PasswordChangeView(GenericAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = PasswordChangeSerializer
 
+    response = {
+        'msg': '',
+        'success': False
+    }
+
     def post(self, request):
+        response = self.response
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"msg": "New password has been updated successfully",
-                         "success": True})
+        if serializer.is_valid():
+            response['msg'] = "New password has been updated successfully"
+            response['success'] = True
+            serializer.save()
+        else:
+            response['msg'] = 'Error in updating password'
+
+        return Response(response)
 
 
 def activate_user(request, unique_id):
@@ -364,7 +374,7 @@ def activate_user(request, unique_id):
 @api_view(['GET'])
 def get_user_instrument(request, user_id):
     """
-    fetches the insrument of a user
+    fetches the instrument of a user
     """
     try:
         profile = Profile.objects.get(user__id=user_id)
@@ -374,3 +384,26 @@ def get_user_instrument(request, user_id):
     if request.method == 'GET':
         serializer = UserInstrumentSerilaizer(profile)
         return Response(serializer.data)
+
+
+class PasswordResetView(GenericAPIView):
+    """
+    Calls Django Auth PasswordResetForm save method.
+    Accepts the following POST parameters: email
+    Returns the success/fail message.
+    """
+    serializer_class = PasswordResetSerializer
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        # Create a serializer with request.data
+        import ipdb;ipdb.set_trace()
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+        # Return the success message with OK HTTP status
+        return Response(
+            {"detail": "Password reset e-mail has been sent."},
+            status=status.HTTP_200_OK
+        )

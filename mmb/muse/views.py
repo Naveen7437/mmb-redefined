@@ -52,9 +52,10 @@ class SongViewset(viewsets.ModelViewSet):
         tags = request.stream.POST.get('tags')
         user = request.stream.POST.get('user')
         band_id = request.stream.POST.get('band')
-        
+
         try:
             band = Band.objects.get(id=band_id)
+            user = None
         except Band.DoesNotExist:
             band = None
 
@@ -113,6 +114,7 @@ class SongLikeViewset(viewsets.ModelViewSet):
 
         user_id = serializer.data.get('user')
         song_id = serializer.data.get('song')
+        band_id = serializer.data.get('band')
 
         if not (user_id and song_id):
             return Response({'error': 'Invalid request'})
@@ -133,6 +135,7 @@ class PlayListViewset(viewsets.ModelViewSet):
     """
     serializer_class = PlayListSerializer
     queryset = PlayList.objects.all()
+
 
 class PlayListTrackViewset(viewsets.ModelViewSet):
     """
