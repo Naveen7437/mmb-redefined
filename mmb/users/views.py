@@ -368,7 +368,7 @@ def activate_user(request, unique_id):
         user.is_active = True
 
     # TODO: adding redirect url here to login view
-    return HttpResponseRedirect("htps://google.com")
+    return HttpResponseRedirect("http://35.161.216.119/")
 
 
 @api_view(['GET'])
@@ -397,7 +397,7 @@ class PasswordResetView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         # Create a serializer with request.data
-        import ipdb;ipdb.set_trace()
+        # import ipdb;ipdb.set_trace()
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -407,3 +407,10 @@ class PasswordResetView(GenericAPIView):
             {"detail": "Password reset e-mail has been sent."},
             status=status.HTTP_200_OK
         )
+
+
+
+
+
+
+

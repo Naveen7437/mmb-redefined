@@ -96,19 +96,23 @@ def save_user_picture(backend, user, response, is_new,  *args, **kwargs):
             profile.save()
 
 
-def mail_user_activation_key(user=None):
+def mail_user_activation_key(user):
     """
     mail user for account verification
     """
 
-    # link = "{0}/users/activate/{1}".format(settings.APP_URL, user.activation_key)
+    # todo: log error here
+    if not user.email:
+        return
+
+    link = "{0}/users/activate/{1}".format(settings.APP_URL, user.activation_key)
     # TODO: update subject and message and move to task
     subject = "Activate your mmb account"
     from_email = "khnaveen01@gmail.com"
-    # c = Context({"link": link})
-    text_content = render_to_string('email.txt')
-    html_content = render_to_string('email.html')
-    to = ["naveenkh7437@gmail.com"]
+    context = Context({"link": link, "username": user.username})
+    text_content = render_to_string('email.txt', context)
+    html_content = render_to_string('email.html', context)
+    to = [user.email]
     mail = EmailMultiAlternatives(subject, text_content, from_email, to)
     mail.attach_alternative(html_content, "text/html")
     mail.send()
