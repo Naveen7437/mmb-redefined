@@ -242,6 +242,8 @@ class UserMemberSerializer(serializers.Serializer):
     class Meta:
         model = get_user_model()
 
+        fields = ('id', 'username', 'full_name', 'avatar')
+
 
 class PasswordResetSerializer(serializers.Serializer):
     """
