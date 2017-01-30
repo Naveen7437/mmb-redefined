@@ -34,7 +34,7 @@ class Band(models.Model):
     year = models.IntegerField(_('year'), choices=YEAR_CHOICES,
                                default=datetime.now().year)
     desc = models.CharField(max_length=255, blank=True, null=True)
-    created_by = models.ForeignKey(AUTH_USER_MODEL, related_name='band_admin')
+    created_by = models.ForeignKey(AUTH_USER_MODEL, related_name='band_admin', blank=True)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
     fb_link = models.CharField(max_length=255, blank=True, null=True)
