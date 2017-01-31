@@ -105,7 +105,7 @@ def mail_user_activation_key(user, host=None):
     if not user.email:
         return
 
-    link = "{0}/users/activate/{1}".format(host, user.activation_key)
+    link = "http://localhost:8000/#/users/activate/{0}/".format(user.activation_key)
     # TODO: update subject and message and move to task
     subject = "Activate your mmb account"
     from_email = "khnaveen01@gmail.com"

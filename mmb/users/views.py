@@ -362,14 +362,18 @@ def activate_user(request, unique_id):
     """
     activate user and redirect to login page
     """
+    response = {
+        'error': '',
+        'success': False
+    }
     # TODO: check expiration of the verification link
     user = get_object_or_404(get_user_model(), activation_key=unique_id)
 
     if user.is_active == False:
         user.is_active = True
+        response['suucess'] = True
 
-    # TODO: adding redirect url here to login view
-    return HttpResponseRedirect("http://35.161.216.119/")
+    return Response(response)
 
 
 @api_view(['GET'])
