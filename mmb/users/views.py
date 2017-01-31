@@ -286,6 +286,7 @@ class UserCreateViewset(viewsets.ModelViewSet):
         data = request.data
         data = dict(data.items())
         serializer = UserCreateSerializer(data=data)
+        host = request.META['HTTP_HOST']
 
         if serializer.is_valid():
             user = get_user_model().objects.create_user(**serializer.data)
@@ -298,7 +299,7 @@ class UserCreateViewset(viewsets.ModelViewSet):
             user.activation_key = activation_key
             user.save()
 
-            mail_user_activation_key(user)
+            mail_user_activation_key(user, host=host)
             # getting application
             application = Application.objects.get(name="mmb")
 

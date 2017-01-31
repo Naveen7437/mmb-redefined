@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^create/$', UserCreateViewset.as_view({"post": "create"})),
     url(r'^password/change/$', PasswordChangeView.as_view(), name='password_change'),
    url(r'^password/reset/$', PasswordResetView.as_view(),name='rest_password_reset'),
-    url(r'^activate/(?P<unique_id>.+)$', activate_user),
-    url(r'^ins/(?P<user_id>.+)$', get_user_instrument)
+    url(r'^activate/(?P<unique_id>.+)/$', activate_user),
+    url(r'^ins/(?P<user_id>.+)/$', get_user_instrument)
 ]
 

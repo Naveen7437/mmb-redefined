@@ -96,7 +96,7 @@ def save_user_picture(backend, user, response, is_new,  *args, **kwargs):
             profile.save()
 
 
-def mail_user_activation_key(user):
+def mail_user_activation_key(user, host=None):
     """
     mail user for account verification
     """
@@ -105,7 +105,7 @@ def mail_user_activation_key(user):
     if not user.email:
         return
 
-    link = "{0}/users/activate/{1}".format(settings.APP_URL, user.activation_key)
+    link = "{0}/users/activate/{1}".format(host, user.activation_key)
     # TODO: update subject and message and move to task
     subject = "Activate your mmb account"
     from_email = "khnaveen01@gmail.com"
