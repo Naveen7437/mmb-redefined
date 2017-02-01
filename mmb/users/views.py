@@ -371,7 +371,7 @@ def activate_user(request, unique_id):
 
     if user.is_active == False:
         user.is_active = True
-        response['suucess'] = True
+        response['success'] = True
 
     return Response(response)
 
