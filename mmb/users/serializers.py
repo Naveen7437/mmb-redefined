@@ -222,7 +222,7 @@ class UserInstrumentSerilaizer(serializers.Serializer):
     instrument = InstrumentSerializer(many=True, read_only=True)
 
 
-class UserMemberSerializer(serializers.Serializer):
+class UserMemberSerializer(serializers.ModelSerializer):
     """
     serilaizers the user/avatar
     """

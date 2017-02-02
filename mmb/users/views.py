@@ -358,6 +358,7 @@ class PasswordChangeView(GenericAPIView):
         return Response(response)
 
 
+@api_view(['GET'])
 def activate_user(request, unique_id):
     """
     activate user and redirect to login page
@@ -371,6 +372,7 @@ def activate_user(request, unique_id):
 
     if user.is_active == False:
         user.is_active = True
+        user.save()
         response['success'] = True
 
     return Response(response)

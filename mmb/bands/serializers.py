@@ -57,11 +57,18 @@ class BandMemberSerializer(serializers.ModelSerializer):
     """
 
     """
-    instrument = InstrumentSerializer(read_only=True)
-    member = UserMemberSerializer(read_only=True)
+    instrument = InstrumentSerializer()
+    member = UserMemberSerializer()
 
     class Meta:
         model = BandMember
+
+    # def create(self, validated_data):
+    #     # profile_data = validated_data.pop('instrument')
+    #     # user = User.objects.create(**validated_data)
+    #      = BandMember.objects.create(**validated_data)
+
+
 
 
 class UserBandSerializer(serializers.ModelSerializer):
