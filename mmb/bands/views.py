@@ -4,10 +4,12 @@ from rest_framework import filters
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework import generics
 
 from bands.models import Band, BandVacancy, BandMember, BandFollowers
 from bands.serializers import BandFollowersSerializer, BandSerializer,\
-    BandMemberSerializer, BandVacancySerializer, UserBandMemberSerializer
+    BandMemberSerializer, BandVacancySerializer, UserBandMemberSerializer,\
+    BandMemberCreateSerializer
 
 
 class BandViewset(viewsets.ModelViewSet):
@@ -23,7 +25,7 @@ class BandViewset(viewsets.ModelViewSet):
         return {'request': self.request}
 
 
-class BandMemberViewset(viewsets.ModelViewSet):
+class BandMemberFetch(generics.ListAPIView):
     """
 
     """
@@ -34,28 +36,36 @@ class BandMemberViewset(viewsets.ModelViewSet):
     filter_fields = ('band',)
     queryset = BandMember.objects.all()
 
-    def get_serializer_context(self):
-        return {'request': self.request}
 
-    def invite(self, request):
-        """
-        invite the member of the band by the email address
-        """
-        response = {}
-        import ipdb;ipdb.set_trace()
+class BandMemberCreate(generics.CreateAPIView):
+    """
 
-        data = request.data
-        email = data.get("email")
-        band = data.get('band')
-        user = data.get('user')
+    """
+    # authentication_classes = (TokenAuthentication,)
+    # #permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = BandMemberCreateSerializer
+    queryset = BandMember.objects.all()
 
-        if not (email and user and band):
-            return Response({"error":  "Invalid/Missing fields"})
-
-        #TODO: create mail and send to user
-
-        return Response({"msg": "mail sent to user successfully",
-                  "success": True})
+    #
+    # def invite(self, request):
+    #     """
+    #     invite the member of the band by the email address
+    #     """
+    #     response = {}
+    #     import ipdb;ipdb.set_trace()
+    #
+    #     data = request.data
+    #     email = data.get("email")
+    #     band = data.get('band')
+    #     user = data.get('user')
+    #
+    #     if not (email and user and band):
+    #         return Response({"error":  "Invalid/Missing fields"})
+    #
+    #     #TODO: create mail and send to user
+    #
+    #     return Response({"msg": "mail sent to user successfully",
+    #               "success": True})
 
 
 

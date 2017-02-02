@@ -44,6 +44,12 @@ class BandVacancySerializer(serializers.ModelSerializer):
     class Meta:
         model = BandVacancy
 
+class BandMemberCreateSerializer(serializers.ModelSerializer):
+    """
+
+    """
+    class Meta:
+        model = BandMember
 
 class BandFollowersSerializer(serializers.ModelSerializer):
     """
@@ -62,11 +68,6 @@ class BandMemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BandMember
-
-    # def create(self, validated_data):
-    #     # profile_data = validated_data.pop('instrument')
-    #     # user = User.objects.create(**validated_data)
-    #      = BandMember.objects.create(**validated_data)
 
 
 
