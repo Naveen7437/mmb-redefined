@@ -49,8 +49,8 @@ class Band(models.Model):
 class BandMember(models.Model):
     band = models.ForeignKey(Band)
     member = models.ForeignKey(AUTH_USER_MODEL, related_name="band_member")
-    added_by = models.ForeignKey(AUTH_USER_MODEL, related_name='added_by')
-    instrument = models.ForeignKey(Instrument)
+    added_by = models.ForeignKey(AUTH_USER_MODEL, related_name='added_by', blank=True)
+    instrument = models.ForeignKey(Instrument, blank=True)
     active = models.BooleanField(default=True)
     access = models.CharField(max_length=25, choices=ACCESS_CHOICES, default="basic", blank=True)
     type = models.CharField(max_length=9, choices=MEMBER_TYPE, default='Permanent')
