@@ -64,7 +64,7 @@ class BandMember(models.Model):
 class BandVacancy(models.Model):
     band = models.ForeignKey(Band)
     instrument = models.ForeignKey(Instrument)
-    added_by = models.ForeignKey(AUTH_USER_MODEL)
+    added_by = models.ForeignKey(AUTH_USER_MODEL, blank=True)
     active = models.BooleanField(default=True)
     type = models.CharField(max_length=9, choices=MEMBER_TYPE, default='Permanent')
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -97,3 +97,11 @@ class BandFollowers(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.follower.username, self.following_band.name)
+
+
+# class BandUserInvite(models.Model):
+#     band = models.ForeignKey(Band)
+#     user = models.ForeignKey(AUTH_USER_MODEL, related_name="band_member")
+#     invited_by = models.ForeignKey(AUTH_USER_MODEL, related_name='added_by', blank=True)
+
+

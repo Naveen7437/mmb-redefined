@@ -44,8 +44,17 @@ class BandMemberCreate(generics.CreateAPIView):
     # authentication_classes = (TokenAuthentication,)
     # #permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandMemberCreateSerializer
-    queryset = BandMember.objects.all()
+    # queryset = BandMember.objects.all()
 
+
+class BandMemberUpdate(generics.UpdateAPIView):
+    """
+
+    """
+    # authentication_classes = (TokenAuthentication,)
+    # #permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = BandMemberCreateSerializer
+    queryset = BandMember.objects.all()
     #
     # def invite(self, request):
     #     """

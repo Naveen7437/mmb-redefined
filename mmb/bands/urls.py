@@ -18,5 +18,6 @@ urlpatterns = [
     # url(r'^invite/$', BandMemberViewset.as_view({"get": "invite"})),
     url(r'^member/fetch/$', BandMemberFetch.as_view()),
     url(r'^member/create/$', BandMemberCreate.as_view()),
+    url(r'^member/update/$', BandMemberCreate.as_view()),
 ]
 
