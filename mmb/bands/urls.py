@@ -3,7 +3,9 @@ from rest_framework import routers
 
 from bands.views import BandVacancyViewset, \
     BandViewset, BandFollowersViewset, UserBandMemberViewset,\
-    BandMemberFetch, BandMemberCreate, BandMemberUpdate
+    BandMemberFetch, BandMemberCreate, BandMemberUpdate,\
+    BandUserInviteViewset, BandVacancyApplicationViewset
+
 
 
 router = routers.DefaultRouter()
@@ -12,6 +14,8 @@ router.register(r'vacancy', BandVacancyViewset)
 router.register(r'follower', BandFollowersViewset)
 # router.register(r'member', BandMemberViewset)
 router.register(r'user', UserBandMemberViewset)
+router.register(r'invite', BandUserInviteViewset)
+router.register(r'vacancy-app', BandVacancyApplicationViewset)
 
 urlpatterns = [
     url(r'^', include(router.urls)),

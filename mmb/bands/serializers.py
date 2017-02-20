@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 
 from bands.models import Band, BandFollowers, BandMember,\
-    BandVacancy, BandVacancyApplication
+    BandVacancy, BandVacancyApplication, BandUserInvite
 from mdata.serializers import InstrumentSerializer
 from users.serializers import UserMemberSerializer
 
@@ -112,6 +112,12 @@ class BandVacancyApplicationSerializer(serializers.ModelSerializer):
         model = BandVacancyApplication
 
 
+class BandUserInviteSerializer(serializers.ModelSerializer):
+    """
+
+    """
+    class Meta:
+        model = BandUserInvite
 
 
 

@@ -7,10 +7,11 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import generics
 
 from bands.models import Band, BandVacancy, BandMember, BandFollowers,\
-    BandVacancyApplication
+    BandVacancyApplication, BandUserInvite
 from bands.serializers import BandFollowersSerializer, BandSerializer,\
     BandMemberSerializer, BandVacancySerializer, UserBandMemberSerializer,\
-    BandMemberCreateSerializer, BandVacancyApplicationSerializer
+    BandMemberCreateSerializer, BandVacancyApplicationSerializer,\
+    BandUserInviteSerializer
 
 
 class BandViewset(viewsets.ModelViewSet):
@@ -140,15 +141,26 @@ class UserBandMemberViewset(viewsets.ModelViewSet):
         return {'request': self.request}
 
 
-
 class BandVacancyApplicationViewset(viewsets.ModelViewSet):
     """
     band vacany application apis
     """
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandVacancyApplicationSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('band', 'applicant')
+    filter_fields = ('band_vacancy', 'applicant')
     queryset = BandVacancyApplication.objects.all()
+
+
+class BandUserInviteViewset(viewsets.ModelViewSet):
+    """
+    band user invite apis
+    """
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = BandUserInviteSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('band', 'user')
+    queryset = BandUserInvite.objects.all()
 
