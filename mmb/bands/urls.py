@@ -4,7 +4,7 @@ from rest_framework import routers
 from bands.views import BandVacancyViewset, \
     BandViewset, BandFollowersViewset, UserBandMemberViewset,\
     BandMemberFetch, BandMemberCreate, BandMemberUpdate,\
-    BandUserInviteViewset, BandVacancyApplicationViewset
+    BandUserInviteViewset, BandVacancyApplicationViewset, BandVacancyFetchViewset
 
 
 
@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^member/fetch/$', BandMemberFetch.as_view()),
     url(r'^member/create/$', BandMemberCreate.as_view()),
     url(r'^member/update/(?P<pk>[0-9]+)/$', BandMemberUpdate.as_view()),
+    url(r'^vacancy-fetch/$', BandVacancyFetchViewset.as_view()),
 ]
 

@@ -75,7 +75,7 @@ class UserAuthDetailsSerializer(serializers.ModelSerializer):
     """
     is_new = serializers.SerializerMethodField('check_new_user')
     avatar = serializers.SerializerMethodField("get_avatar_url")
-    profile_id = serializers.SerializerMethodField("get_profile_id")
+    profile_id = serializers.SerializerMethodField("get_user_profile_id")
 
     def get_avatar_url(self, obj):
         """
@@ -98,12 +98,12 @@ class UserAuthDetailsSerializer(serializers.ModelSerializer):
         except (Profile.DoesNotExist, TypeError):
             return True
 
-        if not (profile.instrument or profile.genre):
+        if not (profile.instrument.exists() or profile.genre.exists()):
             return True
 
         return False
 
-    def get_profile_id(self, obj):
+    def get_user_profile_id(self, obj):
         """
         if the user profile exists, return profile id
         """

@@ -11,7 +11,7 @@ from bands.models import Band, BandVacancy, BandMember, BandFollowers,\
 from bands.serializers import BandFollowersSerializer, BandSerializer,\
     BandMemberSerializer, BandVacancySerializer, UserBandMemberSerializer,\
     BandMemberCreateSerializer, BandVacancyApplicationSerializer,\
-    BandUserInviteSerializer
+    BandUserInviteSerializer, BandVacancyFetchSerializer
 
 
 class BandViewset(viewsets.ModelViewSet):
@@ -46,7 +46,6 @@ class BandMemberCreate(generics.CreateAPIView):
     # authentication_classes = (TokenAuthentication,)
     # #permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandMemberCreateSerializer
-    # queryset = BandMember.objects.all()
 
 
 class BandMemberUpdate(generics.UpdateAPIView):
@@ -113,7 +112,6 @@ class BandFollowersViewset(viewsets.ModelViewSet):
         return Response(response)
 
 
-
 class BandVacancyViewset(viewsets.ModelViewSet):
     """
 
@@ -124,6 +122,21 @@ class BandVacancyViewset(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('band', 'active')
     queryset = BandVacancy.objects.all()
+
+
+class BandVacancyFetchViewset(generics.ListAPIView):
+    """
+
+    """
+    # authentication_classes = (TokenAuthentication,)
+    # #permission_classes = (IsAuthenticatedOrReadOnly,)
+    serializer_class = BandVacancyFetchSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('band', 'active')
+    queryset = BandVacancy.objects.all()
+
+    def get_serializer_context(self):
+        return {'request': self.request}
 
 
 class UserBandMemberViewset(viewsets.ModelViewSet):

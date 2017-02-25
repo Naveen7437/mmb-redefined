@@ -44,6 +44,30 @@ class BandVacancySerializer(serializers.ModelSerializer):
     class Meta:
         model = BandVacancy
 
+
+class BandVacancyFetchSerializer(serializers.ModelSerializer):
+
+    is_applied = serializers.SerializerMethodField('applied_by_user')
+
+    def applied_by_user(self, obj):
+        request = self.context.get('request')
+        user = request.user
+        if user.is_anonymous():
+            return None
+
+        try:
+            BandVacancyApplication.objects.get(band_vacancy=obj,
+                                               applicant=user, active=True)
+        except BandVacancyApplication.DoesNotExist:
+            return False
+
+        return True
+
+    class Meta:
+        model = BandVacancy
+
+
+
 class BandMemberCreateSerializer(serializers.ModelSerializer):
     """
 
