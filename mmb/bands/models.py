@@ -43,7 +43,7 @@ class Band(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return '{0} '.format(self.name)
 
 
 class BandMember(models.Model):
@@ -105,6 +105,6 @@ class BandUserInvite(models.Model):
     band = models.ForeignKey(Band)
     user = models.ForeignKey(AUTH_USER_MODEL, related_name="band_user_member")
     invited_by = models.ForeignKey(AUTH_USER_MODEL, related_name='invited_by', blank=True)
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=False)
 
 

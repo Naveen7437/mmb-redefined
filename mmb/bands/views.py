@@ -35,7 +35,7 @@ class BandMemberFetch(generics.ListAPIView):
     # #permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandMemberSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('band',)
+    filter_fields = ('band', 'active')
     queryset = BandMember.objects.all()
 
 
@@ -122,7 +122,7 @@ class BandVacancyViewset(viewsets.ModelViewSet):
     # #permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandVacancySerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('band',)
+    filter_fields = ('band', 'active')
     queryset = BandVacancy.objects.all()
 
 
@@ -134,7 +134,7 @@ class UserBandMemberViewset(viewsets.ModelViewSet):
     # #permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = UserBandMemberSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('member', 'band')
+    filter_fields = ('member', 'band', 'active')
     queryset = BandMember.objects.all()
 
     def get_serializer_context(self):
@@ -149,7 +149,7 @@ class BandVacancyApplicationViewset(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandVacancyApplicationSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('band_vacancy', 'applicant')
+    filter_fields = ('band_vacancy', 'applicant', 'active')
     queryset = BandVacancyApplication.objects.all()
 
 
@@ -161,6 +161,6 @@ class BandUserInviteViewset(viewsets.ModelViewSet):
     # permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandUserInviteSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('band', 'user')
+    filter_fields = ('band', 'user', 'active')
     queryset = BandUserInvite.objects.all()
 
