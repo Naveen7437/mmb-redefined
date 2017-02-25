@@ -127,9 +127,9 @@ class Profile(models.Model):
     following_count = models.IntegerField(default=0)
     followed_by_count = models.IntegerField(default=0)
     band_follow_count = models.IntegerField(default=0)
-    join_band = models.BooleanField(default=False)
-    with_band = models.BooleanField(default=False)
-    create_band = models.BooleanField(default=False)
+    join_band = models.BooleanField(default=False)  # whether user wants to join a band or not
+    with_band = models.BooleanField(default=False)  # to be removed
+    create_band = models.BooleanField(default=False)  # wheter user wants to create band or not
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
     about_me = models.CharField(max_length=255, blank=True, null=True)

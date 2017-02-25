@@ -75,6 +75,7 @@ class UserAuthDetailsSerializer(serializers.ModelSerializer):
     """
     is_new = serializers.SerializerMethodField('check_new_user')
     avatar = serializers.SerializerMethodField("get_avatar_url")
+    profile_id = serializers.SerializerMethodField("get_profile_id")
 
     def get_avatar_url(self, obj):
         """
@@ -93,15 +94,34 @@ class UserAuthDetailsSerializer(serializers.ModelSerializer):
         user = request.user
 
         try:
-            Profile.objects.get(user=user)
+            profile = Profile.objects.get(user=user)
         except (Profile.DoesNotExist, TypeError):
             return True
+
+        if not (profile.instrument or profile.genre):
+            return True
+
         return False
+
+    def get_profile_id(self, obj):
+        """
+        if the user profile exists, return profile id
+        """
+        request = self.context.get('request')
+        user = request.user
+
+        try:
+            profile = Profile.objects.get(user=user)
+        except (Profile.DoesNotExist, TypeError):
+            return None
+
+        return profile.id
+
 
     class Meta:
         model = User
 
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'is_new', 'avatar')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'is_new', 'avatar', 'profile_id')
 
 
 class UserDetailSerializer(serializers.ModelSerializer):

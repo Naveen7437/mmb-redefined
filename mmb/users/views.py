@@ -298,6 +298,8 @@ class UserCreateViewset(viewsets.ModelViewSet):
             activation_key = str(uuid.uuid4())
             user.activation_key = activation_key
             user.save()
+            profile = Profile(user=user)
+            profile.save()
 
             mail_user_activation_key(user, host=host)
             # getting application
