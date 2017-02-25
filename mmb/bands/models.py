@@ -65,7 +65,7 @@ class BandVacancy(models.Model):
     band = models.ForeignKey(Band)
     instrument = models.ForeignKey(Instrument)
     added_by = models.ForeignKey(AUTH_USER_MODEL, blank=True, related_name="vacancy_added_by")
-    closed_by = models.ForeignKey(AUTH_USER_MODEL, blank=True, related_name="closed_by")
+    closed_by = models.ForeignKey(AUTH_USER_MODEL, blank=True, null=True, related_name="closed_by")
     active = models.BooleanField(default=True)
     type = models.CharField(max_length=9, choices=MEMBER_TYPE, default='Permanent')
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
