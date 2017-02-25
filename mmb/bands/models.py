@@ -105,7 +105,7 @@ class BandUserInvite(models.Model):
     band = models.ForeignKey(Band)
     user = models.ForeignKey(AUTH_USER_MODEL, related_name="band_user_member")
     invited_by = models.ForeignKey(AUTH_USER_MODEL, related_name='invited_by', blank=True)
-    closed_by = models.ForeignKey(AUTH_USER_MODEL, related_name='closed_by', blank=True, null=True)
+    closed_by = models.ForeignKey(AUTH_USER_MODEL, related_name='closed_rejected_by', blank=True, null=True)
     active = models.BooleanField(default=True)
     accept = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
