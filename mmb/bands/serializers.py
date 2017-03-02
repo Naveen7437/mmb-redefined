@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 
 from bands.models import Band, BandFollowers, BandMember,\
-    BandVacancy, BandVacancyApplication, BandUserInvite
+    BandVacancy, BandVacancyApplication, BandMemberInstrument
 from mdata.serializers import InstrumentSerializer
 from users.serializers import UserMemberSerializer
 
@@ -87,7 +87,7 @@ class BandMemberSerializer(serializers.ModelSerializer):
     """
 
     """
-    instrument = InstrumentSerializer()
+    # instruments = InstrumentSerializer()
     member = UserMemberSerializer()
 
     class Meta:
@@ -136,13 +136,26 @@ class BandVacancyApplicationSerializer(serializers.ModelSerializer):
         model = BandVacancyApplication
 
 
-class BandUserInviteSerializer(serializers.ModelSerializer):
+class BandMemberInstrumentSerializer(serializers.ModelSerializer):
     """
 
     """
     class Meta:
-        model = BandUserInvite
+        model = BandMemberInstrument
 
+    def update(self, instance, validated_data):
+
+        instance.active = validated_data['active']
+        instance.bandmember = validated_data['bandmember']
+        instance.instrument = validated_data['instrument']
+        instance.save()
+
+        if validated_data.get('active'):
+            #todo use update here
+            bandmember = BandMember.objects.get(id=instance.bandmember.id)
+            bandmember.active = True
+            bandmember.save()
+        return instance
 
 
 

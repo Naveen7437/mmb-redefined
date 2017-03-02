@@ -7,11 +7,11 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import generics
 
 from bands.models import Band, BandVacancy, BandMember, BandFollowers,\
-    BandVacancyApplication, BandUserInvite
+    BandVacancyApplication, BandMemberInstrument
 from bands.serializers import BandFollowersSerializer, BandSerializer,\
     BandMemberSerializer, BandVacancySerializer, UserBandMemberSerializer,\
-    BandMemberCreateSerializer, BandVacancyApplicationSerializer,\
-    BandUserInviteSerializer, BandVacancyFetchSerializer
+    BandMemberCreateSerializer, BandVacancyApplicationSerializer, \
+    BandMemberInstrumentSerializer, BandVacancyFetchSerializer
 
 
 class BandViewset(viewsets.ModelViewSet):
@@ -46,6 +46,46 @@ class BandMemberCreate(generics.CreateAPIView):
     # authentication_classes = (TokenAuthentication,)
     # #permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandMemberCreateSerializer
+
+    def create(self, request, *args, **kwargs):
+        """
+        add band member
+        """
+        response = {
+            "success": False,
+            "data": {}
+        }
+
+        data = request.data
+        member = data.get('member')
+        band = data.get('band')
+        instruments = data.pop('instruments', [])
+
+        try:
+            band_member = BandMember.objects.get(band__id=band, member__id=member)
+            response['data']['band'] = band_member.band.name
+            response['data']['member'] = band_member.member.username
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+        except BandMember.DoesNotExist:
+            serialied_data = BandMemberCreateSerializer(data=data)
+
+            if not serialied_data.is_valid():
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+            serialied_data.save()
+            bandmember_id = serialied_data.data.get('id')
+
+            for instrument in instruments:
+                try :
+                    BandMemberInstrument(instrument__id=instrument, bandmember__id=bandmember_id)
+                except BandMemberInstrument.DoesNotExist:
+                    bmins = BandMemberInstrument()
+                    bmins.instrument_id = instrument
+                    bmins.bandmember_id = bandmember_id
+                    bmins.save()
+
+            return Response(serialied_data.data, status=status.HTTP_201_CREATED)
 
 
 class BandMemberUpdate(generics.UpdateAPIView):
@@ -166,14 +206,40 @@ class BandVacancyApplicationViewset(viewsets.ModelViewSet):
     queryset = BandVacancyApplication.objects.all()
 
 
-class BandUserInviteViewset(viewsets.ModelViewSet):
+# class BandUserInviteViewset(viewsets.ModelViewSet):
+#     """
+#     band user invite apis
+#     """
+#     # authentication_classes = (TokenAuthentication,)
+#     # permission_classes = (IsAuthenticatedOrReadOnly,)
+#     serializer_class = BandUserInviteSerializer
+#     filter_backends = (filters.DjangoFilterBackend,)
+#     filter_fields = ('band', 'user', 'active')
+#     queryset = BandUserInvite.objects.all()
+
+
+class BandMemberInstrumentViewset(viewsets.ModelViewSet):
     """
-    band user invite apis
+
     """
     # authentication_classes = (TokenAuthentication,)
     # permission_classes = (IsAuthenticatedOrReadOnly,)
-    serializer_class = BandUserInviteSerializer
+    # import ipdb;ipdb.set_trace()
+    queryset = BandMemberInstrument.objects.all()
+    serializer_class = BandMemberInstrumentSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('band', 'user', 'active')
-    queryset = BandUserInvite.objects.all()
+    filter_fields = ('bandmember', 'active')
+
+
+#
+# class BandMemberInstrumentUpdateApi(generics.UpdateAPIView):
+#     serializer_class = BandMemberInstrumentSerializer
+#     filter_backends = (filters.DjangoFilterBackend,)
+#     filter_fields = ('bandmember', 'active')
+#
+
+
+
+
+
 

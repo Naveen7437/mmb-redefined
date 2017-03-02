@@ -49,8 +49,11 @@ class Band(models.Model):
 class BandMember(models.Model):
     band = models.ForeignKey(Band)
     member = models.ForeignKey(AUTH_USER_MODEL, related_name="band_member")
+    # added/invited to band
     added_by = models.ForeignKey(AUTH_USER_MODEL, related_name='added_by', blank=True)
-    instrument = models.ForeignKey(Instrument, blank=True)
+    removed_by = models.ForeignKey(AUTH_USER_MODEL, related_name='removed_by', blank=True, null=True)
+    invitation = models.BooleanField(default=False)
+    instruments = models.ManyToManyField(Instrument, through="BandMemberInstrument", blank=True)
     active = models.BooleanField(default=True)
     access = models.CharField(max_length=25, choices=ACCESS_CHOICES, default="basic", blank=True)
     type = models.CharField(max_length=9, choices=MEMBER_TYPE, default='Permanent')
@@ -58,7 +61,17 @@ class BandMember(models.Model):
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
 
     def __str__(self):
-        return '{} - {}'.format(self.band, self.member)
+        return '{0} - {1}'.format(self.band, self.member)
+
+
+class BandMemberInstrument(models.Model):
+    bandmember = models.ForeignKey(BandMember)
+    instrument = models.ForeignKey(Instrument)
+    active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '{0} - {1}'.format(self.bandmember, self.instrument)
+
 
 
 class BandVacancy(models.Model):
@@ -99,16 +112,16 @@ class BandFollowers(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.follower.username, self.following_band.name)
-
-
-class BandUserInvite(models.Model):
-    band = models.ForeignKey(Band)
-    user = models.ForeignKey(AUTH_USER_MODEL, related_name="band_user_member")
-    invited_by = models.ForeignKey(AUTH_USER_MODEL, related_name='invited_by', blank=True)
-    closed_by = models.ForeignKey(AUTH_USER_MODEL, related_name='closed_rejected_by', blank=True, null=True)
-    active = models.BooleanField(default=True)
-    accept = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-    updated_at = models.DateTimeField(auto_now=True, db_index=True)
+#
+#
+# class BandUserInvite(models.Model):
+#     band = models.ForeignKey(Band)
+#     user = models.ForeignKey(AUTH_USER_MODEL, related_name="band_user_member")
+#     invited_by = models.ForeignKey(AUTH_USER_MODEL, related_name='invited_by', blank=True)
+#     closed_by = models.ForeignKey(AUTH_USER_MODEL, related_name='closed_rejected_by', blank=True, null=True)
+#     active = models.BooleanField(default=True)
+#     accept = models.BooleanField(default=False)
+#     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+#     updated_at = models.DateTimeField(auto_now=True, db_index=True)
 
 

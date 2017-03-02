@@ -287,7 +287,6 @@ class PasswordResetSerializer(serializers.Serializer):
 
     def save(self):
         request = self.context.get('request')
-        import ipdb;ipdb.set_trace()
         # Set some values to trigger the send_email method.
         opts = {
             # 'use_https': request.is_secure(),

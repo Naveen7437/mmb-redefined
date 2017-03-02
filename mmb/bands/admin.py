@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Band, BandMember, BandVacancy, BandFollowers, BandVacancyApplication
+from .models import Band, BandMember, BandVacancy, BandFollowers, BandVacancyApplication, BandMemberInstrument
 
 
 class BandAdmin(admin.ModelAdmin):
@@ -25,6 +25,7 @@ class BandVacancyApplicationAdmin(admin.ModelAdmin):
 admin.site.register(Band, BandAdmin)
 admin.site.register(BandMember, BandMemberAdmin)
 admin.site.register(BandFollowers)
+admin.site.register(BandMemberInstrument)
 admin.site.register(BandVacancy, BandVacancyAdmin)
 admin.site.register(BandVacancyApplication, BandVacancyApplicationAdmin)
 
