@@ -100,7 +100,7 @@ class BandVacancyApplication(models.Model):
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
 
     def __str__(self):
-        return '{} - {}'.format(self.band_vacancy.band.name, self.user.username)
+        return '{} - {}'.format(self.band_vacancy.band.name, self.applicant.username)
 
 
 class BandFollowers(models.Model):
