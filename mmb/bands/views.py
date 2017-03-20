@@ -35,7 +35,7 @@ class BandMemberFetch(generics.ListAPIView):
     # #permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = BandMemberSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('band', 'active')
+    filter_fields = ('band', 'active', 'invitation')
     queryset = BandMember.objects.all()
 
 
